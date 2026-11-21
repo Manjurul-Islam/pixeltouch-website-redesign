@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixeltouch — Creative iOS Apps for AI, Photo &amp; Video</title>
+<meta name="description" content="Pixeltouch is an independent iOS app studio. We build, own and grow AI, photo, video and design apps loved by 4.9M+ people on the App Store.">
+<meta name="theme-color" content="#f4f6f8">
+<link rel="icon" type="image/svg+xml" href="assets/brand/mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hero-poster.webp">
+<link rel="stylesheet" href="styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Pixeltouch">
+  <div class="loader__stage">
+    <span class="loader__word" lang="en">hello</span><span class="loader__word" lang="bn">হ্যালো</span><span class="loader__word" lang="ja">こんにちは</span>
+    <span class="loader__word" lang="zh">你好</span><span class="loader__word" lang="ar" dir="rtl">مرحبا</span><span class="loader__word" lang="es">hola</span>
+    <span class="loader__word" lang="ru">привет</span><span class="loader__word" lang="fr">bonjour</span><span class="loader__word" lang="it">ciao</span>
+  </div>
+  <div class="loader__bar"><i id="loaderBar"></i></div>
+</div>
+<script>
+/* Loader: "hello" in 9 languages, cycling until the page is ready */
+(function () {
+  var root = document.documentElement, el = document.getElementById('loader');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { root.classList.add('loader-off'); el.remove(); window.__loaderDone = Promise.resolve(); return; }
+  root.classList.add('is-loading');
+  var words = el.querySelectorAll('.loader__word'), i = 0, t0 = performance.now(), ready = false, done;
+  window.__loaderDone = new Promise(function (r) { done = r; });
+  words[0].classList.add('is-on');
+  var STEP = 360, MIN = 2400, MAX = 6000;
+  var tick = setInterval(function () {
+    words[i].classList.remove('is-on'); words[i].classList.add('is-off');
+    var prev = words[i]; setTimeout(function () { prev.classList.remove('is-off'); }, 300);
+    i = (i + 1) % words.length; words[i].classList.add('is-on');
+    var el2 = performance.now() - t0;
+    document.getElementById('loaderBar').style.transform = 'scaleX(' + Math.min(1, ready ? 1 : el2 / MIN * .85) + ')';
+    if ((ready && el2 > MIN && i === 0) || el2 > MAX) finish();
+  }, STEP);
+  function finish() {
+    clearInterval(tick);
+    document.getElementById('loaderBar').style.transform = 'scaleX(1)';
+    // fade the loader only; the page underneath doesn't move (scroll unlock happens after it's gone)
+    el.classList.add('is-leaving');
+    setTimeout(done, 300);
+    setTimeout(function () { el.remove(); root.classList.remove('is-loading'); }, 950);
+  }
+  addEventListener('load', function () { ready = true; });
+})();
+</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><i id="progress"></i></div>
+
+<!-- ================= HEADER ================= -->
+<header class="hdr" id="hdr">
+  <div class="hdr__inner">
+    <nav class="pill pill--nav" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Pixeltouch — home">{{LOGO}}</a>
+      <ul class="nav" id="nav">
+        <li class="nav__has-mega">
+          <a href="#apps" class="nav__link" aria-haspopup="true" aria-expanded="false" id="appsTrigger">Apps <span class="chev">{{CHEV}}</span></a>
+          <div class="mega" id="mega">
+            <div class="mega__grid">{{NAV_APPS}}</div>
+            <div class="mega__foot">
+              <span><b>9 apps</b> · 4.9M+ downloads · 4.5★ average</span>
+              <a href="#apps">Explore the portfolio {{ARROW}}</a>
+            </div>
+          </div>
+        </li>
+        <li><a href="#about" class="nav__link">Studio</a></li>
+        <li><a href="#tech" class="nav__link">Technology</a></li>
+        <li><a href="#philosophy" class="nav__link">Philosophy</a></li>
+        <li><a href="#contact" class="nav__link">Contact</a></li>
+        <li class="nav__blob" aria-hidden="true"></li>
+      </ul>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
+    </nav>
+    <div class="pill pill--cta">
+      <a class="btn btn--ghost btn--sm btn--icon" href="https://apps.apple.com/us/developer/sohel-ibna-saad/id1374788998" target="_blank" rel="noopener" aria-label="Pixeltouch on the App Store">{{APPLE}}</a>
+      <a class="btn btn--dark btn--sm" href="#download"><span>Get the Apps</span><b class="btn__arrow">{{ARROW}}</b></a>
+    </div>
+  </div>
+  <div class="mnav" id="mnav">
+    <nav class="mnav__links">
+      <a href="#apps"><span>01</span>Apps</a><a href="#about"><span>02</span>Studio</a><a href="#tech"><span>03</span>Technology</a><a href="#philosophy"><span>04</span>Philosophy</a><a href="#contact"><span>05</span>Contact</a>
+    </nav>
+    <div class="mnav__apps">{{MNAV_APPS}}</div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="hero__top">
+    <div class="hero__media" aria-hidden="true">
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=2" disablepictureinpicture disableremoteplayback>
+        <source src="assets/hero.webm?v=2" type="video/webm">
+        <source src="assets/hero.mp4?v=2" type="video/mp4">
+      </video>
+      <div class="hero__veil"></div>
+    </div>
+    <div class="hero__copy">
+    <h1 class="hero__title" data-split>
+      <span class="soft">Creative iOS apps</span><br>
+      <span>millions love.</span>
+    </h1>
+    <p class="hero__lede" data-hero="1">AI, photo, video and design apps for iPhone and iPad — built, owned and grown by Pixeltouch.</p>
+    <div class="hero__ctas" data-hero="2">
+      <a class="btn btn--dark" href="#download">{{APPLE}}<span>Download our apps</span><b class="btn__arrow">{{ARROW}}</b></a>
+      <a class="btn btn--light" href="#apps"><span>Explore the portfolio</span></a>
+    </div>
+  </div>
+  </div>
+
+  <div class="show" id="show" data-hero="3" aria-roledescription="carousel" aria-label="Our apps">
+    <div class="show__rail" id="showRail">{{HERO_CARDS}}</div>
+    <img class="device" src="assets/device.webp" alt="" width="760" height="1545" aria-hidden="true">
+  </div>
+  <script type="application/json" id="appData">{{APP_JSON}}</script>
+</section>
+
+<!-- ================= MARQUEE ================= -->
+<section class="strip" aria-label="Our apps on the App Store">
+  <div class="marquee" data-reveal>{{MARQUEE}}</div>
+</section>
+
+<!-- ================= STUDIO / STATEMENT ================= -->
+<section class="statement" id="about">
+  <div class="wrap">
+    <span class="kicker" data-reveal><i>01</i><span>The studio</span></span>
+    <p class="statement__text" data-words>
+      Pixeltouch builds <span class="ico" style="--r:-8deg"><img src="assets/icons/blur-photo.webp" alt=""></span> publishes <span class="ico" style="--r:6deg"><img src="assets/icons/inva.webp" alt=""></span> and grows <span class="ico" style="--r:-4deg"><img src="assets/icons/pixellab.webp" alt=""></span> its own iOS apps. Every product is designed and shipped in-house — and reaches creators in every corner of the App Store.
+    </p>
+    <div class="stats">
+      <div class="stat" data-reveal><b><span data-count="4.9" data-dec="1">4.9</span><sup>M+</sup></b><span>Downloads worldwide</span></div>
+      <div class="stat" data-reveal style="--d:90ms"><b><span data-count="9">9</span></b><span>Apps in our portfolio</span></div>
+      <div class="stat" data-reveal style="--d:180ms"><b><span data-count="4.5" data-dec="1">4.5</span><sup>★</sup></b><span>Average App Store rating</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APP LAB (featured + all products, merged) ================= -->
+<section class="lab" id="apps">
+  <div class="wrap">
+    <header class="lab__head">
+      <div>
+        <span class="kicker" data-reveal><i>02</i><span>The portfolio</span></span>
+        <h2 class="h2" data-reveal style="--d:80ms"><span class="soft">Nine apps,</span><br>one obsession.</h2>
+      </div>
+      <p class="lab__aside" data-reveal style="--d:160ms">Photo, video, AI and design apps for iPhone — each one built, owned and grown in-house. Pick an app to take a closer look.</p>
+    </header>
+
+    <div class="lab__body">
+      <div class="lab__info" data-reveal>
+        <div class="lab__details" aria-live="polite">{{LAB_DETAILS}}</div>
+        <div class="lab__dock" id="labList" role="tablist" aria-label="Choose an app">{{LAB_DOCK}}</div>
+      </div>
+      <div class="lab__stage" id="labStage" data-reveal style="--d:120ms">
+        <div class="lab__wash" aria-hidden="true"></div>
+        <div class="lab__phone" id="labPhone">
+          <div class="lab__screens">{{LAB_SCREENS}}</div>
+          <img class="lab__device" src="assets/device.webp" alt="" width="760" height="1545" aria-hidden="true">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TECHNOLOGY (pinned horizontal) ================= -->
+<section class="tech" id="tech">
+  <div class="tech__pin">
+    <div class="tech__intro wrap">
+      <div>
+        <span class="kicker"><i>03</i><span>Technology</span></span>
+        <h2 class="h2"><span class="soft">The quiet engine</span><br>behind every app.</h2>
+      </div>
+      <p>Every Pixeltouch app runs on the same in-house stack — AI, media processing, scalable APIs and automation, tuned for millions of users.</p>
+    </div>
+    <div class="tech__viewport">
+      <ol class="tech__track" id="techTrack">
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:ai-chip}}</div>
+          <span class="tcard__n">01</span>
+          <h3>AI Image Processing</h3>
+          <p>Enhance, restore, edit and transform images using intelligent visual processing built for mobile-first experiences.</p>
+        </li>
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:video-editor-timeline}}</div>
+          <span class="tcard__n">02</span>
+          <h3>Smart Video Tools</h3>
+          <p>Powerful video editing, screen recording, trimming, exporting and creative media features optimized for iOS users.</p>
+        </li>
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:network-switch-ports}}</div>
+          <span class="tcard__n">03</span>
+          <h3>Scalable API Systems</h3>
+          <p>Reliable backend APIs designed for fast response, secure data flow, app configuration, content delivery and analytics.</p>
+        </li>
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:onboarding-carousel}}</div>
+          <span class="tcard__n">04</span>
+          <h3>Product Engineering</h3>
+          <p>From idea to launch, we build polished iOS products with clean UX, stable performance and App Store-ready quality.</p>
+        </li>
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:settings-toggle-stack}}</div>
+          <span class="tcard__n">05</span>
+          <h3>Automation &amp; Personalization</h3>
+          <p>Personalized app experiences powered by smart rules, user behavior, dynamic content and automated workflows.</p>
+        </li>
+        <li class="tcard">
+          <div class="tcard__art" aria-hidden="true">{{TECH:server-rack}}</div>
+          <span class="tcard__n">06</span>
+          <h3>Cloud-Ready Infrastructure</h3>
+          <p>Backend systems built for growth, supporting queues, jobs, caching, storage, notifications and high-volume app usage.</p>
+        </li>
+        <li class="tcard tcard--end">
+          <p class="tcard__quote">Built for performance.<br><span class="soft">Designed for global App Store users.</span></p>
+          <a class="btn btn--dark" href="#apps"><span>See it in our apps</span><b class="btn__arrow">{{ARROW}}</b></a>
+        </li>
+      </ol>
+    </div>
+    <div class="tech__foot wrap">
+      <span class="tech__idx"><b id="techIdx">01</b> / 06</span>
+      <div class="tech__bar"><i id="techBar"></i></div>
+      <span class="tech__hint">Scroll to explore</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PHILOSOPHY ================= -->
+<section class="philo" id="philosophy">
+  <div class="wrap">
+    <header class="philo__head">
+      <span class="kicker" data-reveal><i>04</i><span>Our philosophy</span></span>
+      <h2 class="philo__title" data-reveal style="--d:80ms">We build <em>products</em>,<br><span class="soft">not projects.</span></h2>
+    </header>
+  </div>
+  <div class="ticker" aria-label="What we value">
+    <div class="ticker__track">
+      <span>Relentless focus on user experience</span><i></i><span>Continuous product improvement</span><i></i><span>Performance-driven development</span><i></i><span>Long-term product thinking</span><i></i><span>Data-informed decisions</span><i></i><span>Scalable app architecture</span><i></i>
+    </div>
+    <div class="ticker__track" aria-hidden="true">
+      <span>Relentless focus on user experience</span><i></i><span>Continuous product improvement</span><i></i><span>Performance-driven development</span><i></i><span>Long-term product thinking</span><i></i><span>Data-informed decisions</span><i></i><span>Scalable app architecture</span><i></i>
+    </div>
+  </div>
+  <div class="wrap">
+    <ol class="tenets" id="tenets">
+      <li class="tenet" data-reveal><span class="tenet__n">01</span><h3>We own what we build</h3><p>Every app is our own product, designed and shipped in-house.</p></li>
+      <li class="tenet" data-reveal><span class="tenet__n">02</span><h3>Users come first</h3><p>We obsess over the details that make an app feel effortless.</p></li>
+      <li class="tenet" data-reveal><span class="tenet__n">03</span><h3>Ship, then sharpen</h3><p>Launch fast, learn from real users, refine relentlessly.</p></li>
+      <li class="tenet" data-reveal><span class="tenet__n">04</span><h3>Small team, big reach</h3><p>A focused team building apps used by millions.</p></li>
+      <li class="tenet" data-reveal><span class="tenet__n">05</span><h3>Data over opinions</h3><p>Real usage and App Store signals guide every call.</p></li>
+      <li class="tenet" data-reveal><span class="tenet__n">06</span><h3>Built to last</h3><p>We think in years, not sprints, and grow products for the long run.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= DOWNLOAD CTA ================= -->
+<section class="cta" id="download">
+  <div class="wrap">
+    <div class="cta__card" id="ctaCard" data-reveal>
+      <div class="cta__bg" aria-hidden="true">
+        <img src="assets/cta-daisies.webp?v=2" alt="" width="2800" height="2091" loading="lazy" decoding="async">
+        <div class="pblur"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="cta__copy">
+        <span class="kicker kicker--glass"><i>05</i><span>Download our apps</span></span>
+        <h2 class="h2"><span class="soft">Nine apps.</span><br>One tap away.</h2>
+        <p>Photo, video, AI and design apps — free to download on the App Store. Some apps offer in-app purchases or subscriptions.</p>
+        <a class="btn btn--dark" href="https://apps.apple.com/us/developer/sohel-ibna-saad/id1374788998" target="_blank" rel="noopener">{{APPLE}}<span>View all on the App Store</span><b class="btn__arrow">{{ARROW}}</b></a>
+      </div>
+      <div class="cta__icons" id="ctaIcons">{{CTA_ICONS}}</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact__card" data-reveal>
+      <div class="contact__intro">
+        <div class="contact__top">
+          <span class="kicker"><i>06</i><span>Contact</span></span>
+          <h2 class="h2"><span class="soft">Let’s</span> connect.</h2>
+          <p>Whether it’s a partnership, press inquiry, or just hello — drop us a line. We usually reply within a working day.</p>
+        </div>
+        <div class="contact__meta">
+          <a class="mailcard" href="mailto:support@pixeltouch.net">
+            <small>Email us</small><b>support@pixeltouch.net</b><i>{{ARROW}}</i>
+          </a>
+          <div class="contact__addr">
+            <small>Studio</small>
+            <address>House# 715, Road# 11, Avenue# 3,<br>Mirpur DOHS, Dhaka 1216, Bangladesh.</address>
+          </div>
+        </div>
+      </div>
+      <form class="form" id="contactForm" novalidate>
+        <div class="form__head"><h3>Send us a message</h3><span>All fields required</span></div>
+        <div class="row">
+          <label class="field"><input name="name" required autocomplete="name" placeholder=" "><span>Your name</span></label>
+          <label class="field"><input name="email" type="email" required autocomplete="email" placeholder=" "><span>Email address</span></label>
+        </div>
+        <fieldset class="seg-wrap">
+          <legend>What’s it about?</legend>
+          <div class="seg">
+            <label><input type="radio" name="subject" value="App Support" checked><i>App Support</i></label>
+            <label><input type="radio" name="subject" value="Media Contact"><i>Media</i></label>
+            <label><input type="radio" name="subject" value="Advertising"><i>Advertising</i></label>
+            <label><input type="radio" name="subject" value="General Contact"><i>General</i></label>
+          </div>
+        </fieldset>
+        <label class="field field--area"><textarea name="message" rows="5" required placeholder=" "></textarea><span>Your message</span></label>
+        <div class="form__foot">
+          <p class="form__status" id="formStatus" role="status"></p>
+          <button class="btn btn--dark" type="submit"><span>Send message</span><b class="btn__arrow">{{ARROW}}</b></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div class="foot__brand">
+        <a class="brand" href="#top" aria-label="Pixeltouch — back to top">{{LOGO_FOOT}}</a>
+        <p>A product-based iOS studio. We build, own and grow AI, photo, video and design apps for App Store users worldwide.</p>
+        <a class="foot__mail" href="mailto:support@pixeltouch.net">support@pixeltouch.net</a>
+      </div>
+      <div class="foot__col"><h4>Company</h4><ul><li><a href="#about">Studio</a></li><li><a href="#apps">Apps</a></li><li><a href="#tech">Technology</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div class="foot__col foot__col--wide"><h4>Products</h4><ul class="two">{{FOOTER_APPS}}</ul></div>
+      <div class="foot__col"><h4>Download from</h4><a class="badge" href="https://apps.apple.com/us/developer/sohel-ibna-saad/id1374788998" target="_blank" rel="noopener"><img src="assets/appstore.svg" alt="Download on the App Store" width="140" height="47"></a></div>
+    </div>
+    <div class="foot__bottom">
+      <span>© 2026 Pixeltouch. All rights reserved.</span>
+      <nav><a href="https://pixeltouch.net/privacy-policy">Privacy Policy</a><a href="https://pixeltouch.net/terms">Terms of Use</a><a href="#contact">Contact</a></nav>
+    </div>
+    <p class="foot__legal">Apple, the Apple logo, App Store, iPhone, and iPad are trademarks of Apple Inc., registered in the U.S. and other countries.</p>
+  </div>
+  <div class="foot__scene">
+    <div class="wrap foot__word" id="footWord" aria-hidden="true">
+      <svg viewBox="44 8 141 27"><defs><radialGradient id="fwg" gradientUnits="userSpaceOnUse" cx="110" cy="20" r="34"><stop offset="0" stop-color="#00B8C9"/><stop offset=".55" stop-color="#6EC064"/><stop offset="1" stop-color="#6EC064" stop-opacity="0"/></radialGradient></defs>
+        <g class="fw__base">{{WORDS}}</g><g class="fw__lit" fill="url(#fwg)">{{WORDS}}</g></svg>
+    </div>
+    <picture class="foot__meadow" aria-hidden="true">
+      <source media="(max-width:700px)" srcset="assets/meadow-sm.webp?v=6">
+      <img src="assets/meadow.webp?v=6" alt="" width="3840" height="1334" loading="lazy" decoding="async">
+    </picture>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>
