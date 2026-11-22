@@ -602,3 +602,10 @@ img[src*="assets/icons/"]{aspect-ratio:1/1;object-fit:cover;flex-shrink:0;height
 @keyframes lineLoop{0%,62%{stroke-dashoffset:0}78%{stroke-dashoffset:-1}78.01%{stroke-dashoffset:1}96%,100%{stroke-dashoffset:0}}
 .tcard__art .hl-a:not([data-role="decor"]):not(.f-accent):not(.s-accent){animation:hl-fade .33s ease-out var(--d) both,softBreath 5s ease-in-out calc(var(--d) + 2s) infinite}
 @keyframes softBreath{0%,100%{opacity:1}50%{opacity:.82}}
+
+/* ============ PORTFOLIO dock: active = larger, no ring/indicator ============ */
+.lab__item::before,.lab__bar{display:none!important}
+.lab__item img{transform-origin:50% 100%}
+.lab__item.is-active img{transform:scale(1.22);box-shadow:0 14px 26px -12px rgba(14,17,22,.6)}
+.lab__item:not(.is-active):hover img{transform:translateY(-3px) scale(1.06)}
+.lab__dock{padding-top:36px}
