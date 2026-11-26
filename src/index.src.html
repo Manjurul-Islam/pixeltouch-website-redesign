@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/hero-poster.webp">
+<link rel="preload" as="image" href="assets/hero-poster.webp?v=3" fetchpriority="high">
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('pt-theme');if(t==='dark'){document.documentElement.dataset.theme='dark';document.querySelector('meta[name=theme-color]').content='#0a0c0f'}}catch(e){}</script>
 </head>
 <body>
 <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Pixeltouch">
@@ -81,6 +81,7 @@
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span></button>
     </nav>
     <div class="pill pill--cta">
+      <button class="tswitch" id="tswitch" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="t-sun" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></g></svg><svg class="t-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.6A8.4 8.4 0 0 1 9.4 3.8a8.4 8.4 0 1 0 10.8 10.8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
       <a class="btn btn--ghost btn--sm btn--icon" href="https://apps.apple.com/us/developer/sohel-ibna-saad/id1374788998" target="_blank" rel="noopener" aria-label="Pixeltouch on the App Store">{{APPLE}}</a>
       <a class="btn btn--dark btn--sm" href="#download"><span>Get the Apps</span><b class="btn__arrow">{{ARROW}}</b></a>
     </div>
@@ -98,9 +99,8 @@
 <section class="hero" id="top">
   <div class="hero__top">
     <div class="hero__media" aria-hidden="true">
-      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=2" disablepictureinpicture disableremoteplayback>
-        <source src="assets/hero.webm?v=2" type="video/webm">
-        <source src="assets/hero.mp4?v=2" type="video/mp4">
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=3" disablepictureinpicture disableremoteplayback>
+
       </video>
       <div class="hero__veil"></div>
     </div>
@@ -152,22 +152,14 @@
         <span class="kicker" data-reveal><i>02</i><span>The portfolio</span></span>
         <h2 class="h2" data-reveal style="--d:80ms"><span class="soft">Nine apps,</span><br>one obsession.</h2>
       </div>
-      <p class="lab__aside" data-reveal style="--d:160ms">Photo, video, AI and design apps for iPhone — each one built, owned and grown in-house. Pick an app to take a closer look.</p>
+      <p class="lab__aside" data-reveal style="--d:160ms">Photo, video, AI and design apps for iPhone — each one built, owned and grown in-house. Scroll through the stack — or jump to any app from the dock.</p>
     </header>
 
-    <div class="lab__body">
-      <div class="lab__info" data-reveal>
-        <div class="lab__details" aria-live="polite">{{LAB_DETAILS}}</div>
-        <div class="lab__dock" id="labList" role="tablist" aria-label="Choose an app">{{LAB_DOCK}}</div>
-      </div>
-      <div class="lab__stage" id="labStage" data-reveal style="--d:120ms">
-        <div class="lab__wash" aria-hidden="true"></div>
-        <div class="lab__phone" id="labPhone">
-          <div class="lab__screens">{{LAB_SCREENS}}</div>
-          <img class="lab__device" src="assets/device.webp" alt="" width="760" height="1545" aria-hidden="true">
-        </div>
-      </div>
+  </div>
+  <div class="stack" id="stack">
+    <div class="stack__cards">{{STACK_CARDS}}
     </div>
+    <nav class="sdock" id="sdock" aria-label="Jump to an app">{{STACK_DOCK}}</nav>
   </div>
 </section>
 
@@ -190,31 +182,31 @@
           <p>Enhance, restore, edit and transform images using intelligent visual processing built for mobile-first experiences.</p>
         </li>
         <li class="tcard">
-          <div class="tcard__art" aria-hidden="true">{{TECH:video-editor-timeline}}</div>
+          <div class="tcard__art" aria-hidden="true">{{TECH:product-gallery-tiles}}</div>
           <span class="tcard__n">02</span>
           <h3>Smart Video Tools</h3>
           <p>Powerful video editing, screen recording, trimming, exporting and creative media features optimized for iOS users.</p>
         </li>
         <li class="tcard">
-          <div class="tcard__art" aria-hidden="true">{{TECH:network-switch-ports}}</div>
+          <div class="tcard__art" aria-hidden="true">{{TECH:cdn-nodes}}</div>
           <span class="tcard__n">03</span>
           <h3>Scalable API Systems</h3>
           <p>Reliable backend APIs designed for fast response, secure data flow, app configuration, content delivery and analytics.</p>
         </li>
         <li class="tcard">
-          <div class="tcard__art" aria-hidden="true">{{TECH:onboarding-carousel}}</div>
+          <div class="tcard__art" aria-hidden="true">{{TECH:app-store-phones}}</div>
           <span class="tcard__n">04</span>
           <h3>Product Engineering</h3>
           <p>From idea to launch, we build polished iOS products with clean UX, stable performance and App Store-ready quality.</p>
         </li>
         <li class="tcard">
-          <div class="tcard__art" aria-hidden="true">{{TECH:settings-toggle-stack}}</div>
+          <div class="tcard__art" aria-hidden="true">{{TECH:toggles}}</div>
           <span class="tcard__n">05</span>
           <h3>Automation &amp; Personalization</h3>
           <p>Personalized app experiences powered by smart rules, user behavior, dynamic content and automated workflows.</p>
         </li>
         <li class="tcard">
-          <div class="tcard__art" aria-hidden="true">{{TECH:server-rack}}</div>
+          <div class="tcard__art" aria-hidden="true">{{TECH:backup-drives}}</div>
           <span class="tcard__n">06</span>
           <h3>Cloud-Ready Infrastructure</h3>
           <p>Backend systems built for growth, supporting queues, jobs, caching, storage, notifications and high-volume app usage.</p>
@@ -359,5 +351,6 @@
 
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="app.js" defer></script>
+<script src="https://liniqo.com/live/embed.js" defer></script>
 </body>
 </html>

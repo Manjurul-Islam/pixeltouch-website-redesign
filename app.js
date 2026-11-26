@@ -30,8 +30,52 @@
 
   /* ---------- hero video: muted, fades in when ready ---------- */
   const vid = $('#heroVideo');
+  // 4K masters, best codec first. Each is only used if this device can decode it smoothly
+  // (hardware / power-efficient) — otherwise the 1080p H.264 safety net plays instead.
+  const HERO_SRC = [
+    { src: 'assets/hero-4k-av1.mp4?v=3', type: 'video/mp4; codecs="av01.0.12M.10"', br: 4100000 },
+    { src: 'assets/hero-4k-hevc.mp4?v=3', type: 'video/mp4; codecs="hvc1.1.6.L153.B0"', br: 5900000 },
+    { src: 'assets/hero-4k.mp4?v=3', type: 'video/mp4; codecs="avc1.640033"', br: 10200000 },
+  ];
+  const HERO_SAFE = 'assets/hero-1080.mp4?v=3';
+  const pickHeroSrc = async () => {
+    const slow = navigator.connection && (navigator.connection.saveData || /(^|-)2g$/.test(navigator.connection.effectiveType || ''));
+    if (slow) return HERO_SAFE;
+    const can = HERO_SRC.filter(o => vid.canPlayType(o.type) !== '');
+    if (!navigator.mediaCapabilities) return (can.find(o => !o.type.includes('avc1')) || can[0] || { src: HERO_SAFE }).src;
+    for (const o of can) {
+      try {
+        const r = await navigator.mediaCapabilities.decodingInfo({ type: 'file',
+          video: { contentType: o.type, width: 3840, height: 2160, bitrate: o.br, framerate: 24 } });
+        if (r.supported && r.smooth && r.powerEfficient) return o.src;
+      } catch (_) { /* unknown codec string: try the next */ }
+    }
+    return HERO_SAFE;
+  };
   if (vid) {
     vid.muted = true; vid.defaultMuted = true; vid.volume = 0;
+    pickHeroSrc().then(src => { vid.src = src; vid.dataset.src = src; vid.load(); vid.play()?.catch(() => {}); watchHero(); });
+    // safety net: if a device still can't keep up with 4K (dropping >20% of frames while visible),
+    // swap to the 1080p master in place — same frame, no restart, no stutter.
+    function watchHero() {
+      if (!vid.getVideoPlaybackQuality) return;
+      let base = null;
+      const check = () => {
+        if (vid.dataset.src === HERO_SAFE) return;
+        if (document.hidden || vid.paused || vid.getBoundingClientRect().bottom < 0) { base = null; return setTimeout(check, 3000); }
+        const q = vid.getVideoPlaybackQuality();
+        if (!base) { base = q; return setTimeout(check, 4000); }
+        const total = q.totalVideoFrames - base.totalVideoFrames, dropped = q.droppedVideoFrames - base.droppedVideoFrames;
+        if (total > 60 && dropped / total > .2) {
+          const t = vid.currentTime;
+          vid.src = vid.dataset.src = HERO_SAFE;
+          vid.addEventListener('loadedmetadata', () => { vid.currentTime = t; vid.playbackRate = .85; vid.play().catch(() => {}); }, { once: true });
+          return;
+        }
+        base = q; setTimeout(check, 4000);
+      };
+      setTimeout(check, 3000);
+    }
     const ready = () => { vid.classList.add('is-ready'); vid.playbackRate = .85; };
     if (vid.readyState >= 3) ready(); else vid.addEventListener('canplay', ready, { once: true });
     vid.play()?.catch(() => {});
@@ -205,68 +249,55 @@
   }
 
   /* =========================================================
-     APP LAB — dock of app icons drives one stage
+     PORTFOLIO — stacked sticky cards; each new card slides over
+     the last, which settles back (scale + shade). Dock follows.
      ========================================================= */
-  const lab = $('.lab');
-  const stage = $('#labStage');
-  const dock = $('#labList');
-  const items = $$('.lab__item');
-  const screens = $$('.lab__screen');
-  const details = $$('.lab__detail');
-  let labCur = 0, labT0 = performance.now(), labPaused = false, labInView = false, userPicked = false;
-  const LAB_DUR = 5000;
-  const pickLab = i => {
-    if (i === labCur) { labT0 = performance.now(); return; }
-    const prev = labCur; labCur = i;
-    const a = APPS[i];
-    items.forEach((it, k) => {
-      const on = k === i;
-      it.classList.toggle('is-active', on);
-      it.setAttribute('aria-selected', String(on)); it.tabIndex = on ? 0 : -1;
+  const stackEl = $('#stack');
+  const scards = $$('.scard');
+  const sdock = $('#sdock');
+  const sItems = $$('.sdock__item');
+  let sCur = -1, sTops = [], sNat = [];
+  const layoutStack = () => {
+    // natural (unstuck) document top of each card and its sticky top
+    const prevT = scards.map(c => c.style.transform);
+    scards.forEach(c => { c.style.position = 'relative'; c.style.top = '0px'; });
+    const base = stackEl.getBoundingClientRect().top + scrollY;
+    sNat = scards.map(c => c.getBoundingClientRect().top + scrollY - base);
+    scards.forEach(c => { c.style.position = ''; c.style.top = ''; });
+    sTops = scards.map(c => parseFloat(getComputedStyle(c).top) || 0);
+    sNat = sNat.map(v => v + base);
+    scards.forEach((c, i) => c.style.transform = prevT[i]);
+  };
+  const setDock = i => {
+    if (i === sCur) return;
+    sCur = i;
+    sItems.forEach((b, k) => { b.classList.toggle('is-active', k === i); b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    if (sdock.scrollWidth > sdock.clientWidth + 2) sdock.scrollTo({ left: sItems[i].offsetLeft - (sdock.clientWidth - sItems[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+  };
+  const updateStack = () => {
+    const vh = innerHeight;
+    // e[i]: 0 when card i's natural top is at the viewport bottom, 1 when it reaches its sticky top
+    const e = scards.map((c, i) => clamp((vh - (sNat[i] - scrollY)) / Math.max(1, vh - sTops[i])));
+    let active = 0;
+    scards.forEach((c, i) => {
+      let depth = 0;
+      for (let j = i + 1; j < scards.length; j++) depth += e[j];
+      depth = Math.min(depth, 3);
+      c.style.setProperty('--d', depth.toFixed(3));
+      c.querySelector('.scard__phone').style.setProperty('--e', (reduce ? 1 : e[i]).toFixed(3));
+      if (e[i] > .55) active = i;
     });
-    setTimeout(() => items[prev].style.setProperty('--lp', 0), 450);
-    screens.forEach((s, k) => s.classList.toggle('is-active', k === i));
-    details.forEach((d, k) => { d.classList.toggle('is-active', k === i); d.querySelector('a').tabIndex = k === i ? 0 : -1; });
-    stage.style.setProperty('--accent', a.accent);
-    stage.style.setProperty('--tint', a.tint);
-    labT0 = performance.now();
-    if (innerWidth <= 960) dock.scrollTo({ left: items[i].offsetLeft - parseFloat(getComputedStyle(dock).paddingLeft), behavior: reduce ? 'auto' : 'smooth' });
+    setDock(active);
   };
-  items.forEach((it, i) => it.addEventListener('click', () => { userPicked = true; pickLab(i); }));
-  dock.addEventListener('keydown', e => {
-    const k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-    if (!k) return;
-    e.preventDefault(); userPicked = true;
-    const n = (labCur + k + items.length) % items.length;
-    pickLab(n); items[n].focus({ preventScroll: true });
-  });
-  const pauseOn = el => {
-    el.addEventListener('mouseenter', () => { labPaused = true; lab.classList.add('is-paused'); });
-    el.addEventListener('mouseleave', () => { labPaused = false; lab.classList.remove('is-paused'); labT0 = performance.now(); });
-  };
-  pauseOn($('.lab__info')); pauseOn(stage);
-  new IntersectionObserver(([e]) => { labInView = e.isIntersecting; labT0 = performance.now(); }, { threshold: .3 }).observe(lab);
-  const tickLab = now => {
-    // autoplay only until the visitor makes a choice — then it's theirs
-    if (labInView && !labPaused && !userPicked && !reduce && !document.hidden) {
-      const p = (now - labT0) / LAB_DUR;
-      items[labCur].style.setProperty('--lp', clamp(p).toFixed(4));
-      if (p >= 1) pickLab((labCur + 1) % items.length);
-    } else if (userPicked) items[labCur].style.setProperty('--lp', 0);
-    else labT0 = now - (parseFloat(items[labCur].style.getPropertyValue('--lp')) || 0) * LAB_DUR;
-    requestAnimationFrame(tickLab);
-  };
-  requestAnimationFrame(tickLab);
-  const labPhone = $('#labPhone');
-  if (finePointer) {
-    stage.addEventListener('pointermove', e => {
-      const r = stage.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      labPhone.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
-      labPhone.style.setProperty('--rx', (-y * 7).toFixed(2) + 'deg');
-    });
-    stage.addEventListener('pointerleave', () => { labPhone.style.setProperty('--ry', '0deg'); labPhone.style.setProperty('--rx', '0deg'); });
-  }
+  sItems.forEach((b, i) => b.addEventListener('click', () => {
+    const y = sNat[i] - sTops[i];
+    if (lenis) lenis.scrollTo(y, { duration: 1.2 }); else scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  }));
+  layoutStack(); updateStack();
+  addEventListener('resize', () => { layoutStack(); updateStack(); });
+  addEventListener('load', () => { layoutStack(); updateStack(); });
+  addEventListener('scroll', () => requestAnimationFrame(updateStack), { passive: true });
+  if (lenis) lenis.on('scroll', updateStack);
 
   /* =========================================================
      TECHNOLOGY — pinned horizontal travel
@@ -280,30 +311,45 @@
   };
   sizeTech(); addEventListener('resize', sizeTech); addEventListener('load', sizeTech);
   let techP = 0, techPT = 0;
-  // Inline each Liniqo illustration from its <template> when its card enters view, so the
-  // draw-on animation is seen; it is re-drawn the next time the card comes back into view.
-  const arts = $$('.tcard__art');
-  const mountArt = art => {
-    const tpl = $('template.tart', art);
-    if (!tpl) return;
-    art.querySelector('.tart-live')?.remove();
-    const live = document.createElement('div');
-    live.className = 'tart-live';
-    live.append(tpl.content.cloneNode(true));
-    art.append(live);
+  // Liniqo live figures: crisper line colour per theme; re-mounted when the theme flips
+  const figLine = () => root.dataset.theme === 'dark' ? '#8b93a1' : '#5d6673';
+  const paintFigs = () => $$('.tfig').forEach(f => {
+    f.setAttribute('data-line', figLine());
+    const fresh = f.cloneNode(false);            // embed.js re-scans added nodes
+    f.replaceWith(fresh);
+  });
+  $$('.tfig').forEach(f => f.setAttribute('data-line', figLine()));
+  window.__repaintFigs = paintFigs;
+
+  /* ---------- theme switch: circular reveal from the button (View Transitions), cross-fade fallback ---------- */
+  const tsw = $('#tswitch');
+  const metaTheme = $('meta[name="theme-color"]');
+  const syncSwitch = () => {
+    const dark = root.dataset.theme === 'dark';
+    tsw.setAttribute('aria-pressed', String(dark));
+    tsw.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    metaTheme.content = dark ? '#0a0c0f' : '#f4f6f8';
   };
-  const artIO = new IntersectionObserver(es => es.forEach(e => {
-    const art = e.target;
-    if (e.isIntersecting && !art.dataset.on) { art.dataset.on = '1'; mountArt(art); }
-    else if (!e.isIntersecting && art.dataset.on) {
-      // fully out of view: clear it so the next visit draws in again (never removed while visible)
-      delete art.dataset.on;
-      art.querySelector('.tart-live')?.remove();
+  const applyTheme = dark => {
+    if (dark) root.dataset.theme = 'dark'; else delete root.dataset.theme;
+    try { localStorage.setItem('pt-theme', dark ? 'dark' : 'light'); } catch (_) {}
+    syncSwitch(); window.__repaintFigs?.();
+  };
+  tsw.addEventListener('click', () => {
+    const dark = root.dataset.theme !== 'dark';
+    if (reduce) return applyTheme(dark);
+    if (document.startViewTransition) {
+      const r = tsw.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      const vt = document.startViewTransition(() => applyTheme(dark));
+      vt.ready.then(() => root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+        { duration: 750, easing: 'cubic-bezier(.65,0,.35,1)', pseudoElement: '::view-transition-new(root)' }));
+    } else {
+      root.classList.add('theme-fade'); applyTheme(dark);
+      setTimeout(() => root.classList.remove('theme-fade'), 600);
     }
-  }), { threshold: 0 });
-  arts.forEach(a => artIO.observe(a));
-  if (finePointer) arts.forEach(a => a.closest('.tcard').addEventListener('mouseenter', () => { if (!a.dataset.busy) { a.dataset.busy = 1; mountArt(a); setTimeout(() => delete a.dataset.busy, 2200); } }));
-  if (reduce) arts.forEach(mountArt);
+  });
+  syncSwitch();
 
   /* PHILOSOPHY — touch: highlight the tenet nearest the viewport centre */
   const tenets = $$('.tenet');

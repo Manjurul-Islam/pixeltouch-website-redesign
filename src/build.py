@@ -106,6 +106,44 @@ def lab_dock():
         for i, a in enumerate(APPS))
 
 
+def stack_cards():
+    out = []
+    n = len(APPS)
+    for i, a in enumerate(APPS):
+        dl = (f'<div><dt>Downloads</dt><dd>{a["dl"]}</dd></div>' if a["dl"] else '<div><dt>Status</dt><dd>New</dd></div>')
+        out.append(f'''
+      <article class="scard" data-i="{i}" style="--i:{i};--accent:{a["accent"]};--tint:{a["tint"]}" aria-label="{e(a["name"])}">
+        <div class="scard__in">
+          <div class="scard__copy">
+            <div class="scard__top">
+              <img class="scard__icon" src="assets/icons/{a["key"]}.webp" alt="" width="72" height="72" loading="lazy">
+              <span class="scard__meta"><b>{e(a["cat"])}</b><span>{i+1:02d} / {n:02d}</span></span>
+            </div>
+            <h3>{e(a["name"])}</h3>
+            <p>{e(a["desc"])}</p>
+            <dl class="scard__stats">{dl}<div><dt>Rating</dt><dd>{a["rating"]}<i>{STAR}</i></dd></div></dl>
+            <a class="btn btn--dark" href="{a["url"]}" target="_blank" rel="noopener">{APPLE}<span>Get it on the App Store</span><b class="btn__arrow">{ARROW}</b></a>
+          </div>
+          <div class="scard__media" aria-hidden="true">
+            <span class="scard__ring"></span><span class="scard__ring scard__ring--2"></span>
+            <div class="scard__phone">
+              <img class="scard__screen" src="assets/screens/{a["key"]}-md.webp" alt="" width="780" height="1690" loading="lazy" decoding="async">
+              <img class="scard__device" src="assets/device.webp" alt="" width="760" height="1545" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+        <span class="scard__shade" aria-hidden="true"></span>
+      </article>''')
+    return "".join(out)
+
+
+def stack_dock():
+    return "".join(
+        f'<button type="button" class="sdock__item{" is-active" if i == 0 else ""}" data-i="{i}" aria-label="{e(a["name"])}">'
+        f'<img src="assets/icons/{a["key"]}.webp" alt="" width="56" height="56" loading="lazy"><span class="sdock__tip">{e(a["short"])}</span></button>'
+        for i, a in enumerate(APPS))
+
+
 TECH_BB = json.loads((ROOT / "src/tech_bbox.json").read_text())
 
 
@@ -142,14 +180,15 @@ tpl = (ROOT / "src/index.src.html").read_text()
 blocks = {
     "LOGO": logo("logo", "h"), "LOGO_FOOT": logo("logo", "f"), "MARK": mark("mark", "s"),
     "NAV_APPS": nav_apps(), "MNAV_APPS": mnav_apps(), "HERO_CARDS": hero_cards(), "APP_JSON": app_json(),
-    "MARQUEE": marquee(), "LAB_DOCK": lab_dock(), "LAB_SCREENS": lab_screens(), "LAB_DETAILS": lab_details(),
+    "MARQUEE": marquee(), "STACK_CARDS": stack_cards(), "STACK_DOCK": stack_dock(),
     "CTA_ICONS": cta_icons(), "FOOTER_APPS": footer_apps(),
     "WORDS": WORDS, "ARROW": ARROW, "CHEV": CHEV, "APPLE": APPLE, "STAR": STAR, "PREV": PREV, "NEXT": NEXT,
 }
 for k, v in blocks.items():
     tpl = tpl.replace("{{" + k + "}}", v)
-for i, key in enumerate(re.findall(r"\{\{TECH:([a-z-]+)\}\}", tpl)):
-    tpl = tpl.replace("{{TECH:" + key + "}}", tech_svg(key, i), 1)
+# Liniqo live hairline figures (free tier, commercial use): pointer-reactive, idle-animated
+for key in re.findall(r"\{\{TECH:([a-z-]+)\}\}", tpl):
+    tpl = tpl.replace("{{TECH:" + key + "}}", f'<div class="tfig" data-liniqo="{key}" data-accent="#00b8c9" data-intensity="0.85" role="img" aria-label=""></div>', 1)
 assert "{{" not in tpl, tpl[tpl.index("{{"):tpl.index("{{") + 40]
 (ROOT / "index.html").write_text(tpl)
 print("built index.html", len(tpl))
