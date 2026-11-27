@@ -731,9 +731,8 @@ html.theme-fade,html.theme-fade *,html.theme-fade *::before,html.theme-fade *::a
 /* Contact: hill shows clearly at the bottom, fades into the panel */
 [data-theme="dark"] .contact__card{background:var(--surface);box-shadow:0 0 0 1px var(--line-2) inset}
 [data-theme="dark"] .contact__intro{background:#0e1216}
-[data-theme="dark"] .contact__intro::before{opacity:1;filter:brightness(.7) saturate(1.05)}
-[data-theme="dark"] .contact__intro::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,#0e1216 0%,rgba(14,18,22,.7) 40%,rgba(14,18,22,.15) 75%,rgba(14,18,22,.35) 100%)}
+[data-theme="dark"] .contact__intro::before{opacity:1;height:72%;filter:brightness(.78) saturate(1.08) contrast(1.04);-webkit-mask:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.04) 14%,rgba(0,0,0,.16) 28%,rgba(0,0,0,.4) 42%,rgba(0,0,0,.72) 56%,rgba(0,0,0,.92) 68%,#000 78%);mask:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.04) 14%,rgba(0,0,0,.16) 28%,rgba(0,0,0,.4) 42%,rgba(0,0,0,.72) 56%,rgba(0,0,0,.92) 68%,#000 78%)}
+[data-theme="dark"] .contact__intro::after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 70%,rgba(14,18,22,.22) 100%)}
 /* Form fields */
 [data-theme="dark"] .field input,[data-theme="dark"] .field textarea{background:#0c0f13;border-color:rgba(255,255,255,.07);color:var(--ink);box-shadow:inset 0 1px 2px rgba(0,0,0,.35)}
 [data-theme="dark"] .field input:hover,[data-theme="dark"] .field textarea:hover{border-color:rgba(255,255,255,.14)}
