@@ -14,7 +14,7 @@
   --line:rgba(14,17,22,.07);
   --line-2:rgba(14,17,22,.12);
   --on-ink:rgb(var(--glass-rgb)); --on-ink-rgb:255 255 255;
-  --glass-rgb:255 255 255; --bg-rgb:244 246 248; --bg-soft:var(--bg-soft);
+  --glass-rgb:255 255 255; --bg-rgb:244 246 248; --bg-soft:#fbfcfd;
   --ghost-a:#f3f4f6; --ghost-b:#e7e9ec; --art-a:#f7f9fb; --art-b:#eef2f5;
   color-scheme:light;
 
