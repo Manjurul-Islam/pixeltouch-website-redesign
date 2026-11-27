@@ -1010,3 +1010,17 @@ html:not([data-theme="dark"]) .mailcard:hover{box-shadow:0 0 0 1px rgb(var(--gla
   html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:0 0 0 1px rgba(14,17,22,.06),0 20px 46px -26px rgba(20,36,60,.11),0 40px 74px -46px rgba(20,36,60,.08)}
   html:not([data-theme="dark"]) .scard__in{box-shadow:0 0 0 1px rgba(14,17,22,.05) inset,0 22px 50px -30px rgba(20,36,60,.10),0 48px 90px -56px rgba(20,36,60,.07)}
 }
+/* ============ v35: hero mockup entrance — compositor-only on phones (no blur filter), no competing work ============ */
+.show[data-hero="3"]{will-change:transform,opacity}
+@media (max-width:960px){
+  [data-hero]{filter:none!important}
+  .show[data-hero="3"]{transform:translate3d(0,28px,0);transition:opacity .9s cubic-bezier(.22,1,.36,1) .55s,transform 1.1s cubic-bezier(.22,1,.36,1) .55s}
+  .is-loaded .show[data-hero="3"]{transform:translate3d(0,0,0)}
+}
+/* ============ v35: heading typeface ============ */
+@font-face{font-family:"EightiesComeback";src:local("Eighties Comeback"),local("EightiesComeback"),local("EightiesComeback-Regular");font-display:swap}
+:root{--font-head:"EightiesComeback",Georgia,serif}
+.hero__title,.h2,.philo__title,.cta__copy h2,.scard h3,.tcard h3,.tenet h3,.foot__brand h2{font-family:var(--font-head);font-weight:400;letter-spacing:-.02em}
+.hero__title{line-height:1}
+.h2,.philo__title,.cta__copy h2{line-height:1.02}
+.loader__word[lang="en"],.loader__word[lang="es"],.loader__word[lang="fr"],.loader__word[lang="it"],.loader__word[lang="ru"]{font-family:var(--font-head);font-weight:400;letter-spacing:-.02em}

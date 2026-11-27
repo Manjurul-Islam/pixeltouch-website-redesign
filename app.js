@@ -60,7 +60,9 @@
   if (vid) {
     vid.muted = true; vid.defaultMuted = true; vid.volume = 0;
     // start the film once the loader is done so it never competes with first paint
-    (window.__loaderDone || Promise.resolve()).then(pickHeroSrc).then(src => { vid.src = src; vid.dataset.src = src; vid.load(); vid.play()?.catch(() => {}); watchHero(); });
+    // phones: let the intro (title + mockup rise) finish before the film starts decoding
+    const afterIntro = () => new Promise(r => setTimeout(r, innerWidth <= 960 ? 1900 : 0));
+    (window.__loaderDone || Promise.resolve()).then(afterIntro).then(pickHeroSrc).then(src => { vid.src = src; vid.dataset.src = src; vid.load(); vid.play()?.catch(() => {}); watchHero(); });
     // safety net: if a device still can't keep up with 4K (dropping >20% of frames while visible),
     // swap to the 1080p master in place — same frame, no restart, no stutter.
     function watchHero() {
@@ -232,6 +234,8 @@
     if (cards.some(c => c.classList.contains('no-anim'))) requestAnimationFrame(() => requestAnimationFrame(() => cards.forEach(c => c.classList.remove('no-anim'))));
   };
   const go = n => { cur = (n % N + N) % N; layout(); autoT0 = performance.now(); };
+  // hold the first auto-advance until the mockup has settled after the loader
+  (window.__loaderDone || Promise.resolve()).then(() => { autoT0 = performance.now() + 1600; });
   const tickShow = now => {
     if (paused || !inView || reduce || document.hidden) autoT0 = now - Math.min(now - autoT0, DUR * .5);
     else if (now - autoT0 >= DUR) go(cur + 1);
