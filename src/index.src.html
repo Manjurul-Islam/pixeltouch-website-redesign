@@ -54,6 +54,10 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) { root.classList.add('loader-off'); el.remove(); window.__loaderDone = Promise.resolve(); return; }
   root.classList.add('is-loading');
+  // block scrolling through the loader itself (no overflow toggle on <html>, which resizes the mobile viewport when removed)
+  var stopScroll = function (e) { e.preventDefault(); };
+  el.addEventListener('touchmove', stopScroll, { passive: false });
+  el.addEventListener('wheel', stopScroll, { passive: false });
   var words = el.querySelectorAll('.loader__word'), i = 0, t0 = performance.now(), ready = false, done;
   window.__loaderDone = new Promise(function (r) { done = r; });
   words[0].classList.add('is-on');

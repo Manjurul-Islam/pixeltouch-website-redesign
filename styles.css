@@ -1160,3 +1160,14 @@ html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(
 /* ============ v43: illustration never zooms on hover (older hover rules replaced the transform) ============ */
 .tcard .tfig,.tcard:hover .tfig,.tcard:active .tfig{transform:scale(var(--s,1)) translate(var(--dx,0px),var(--dy,0px));transition:none}
 @media (max-width:1919px){ .tcard .tfig{pointer-events:none} }
+/* ============ v44: mobile load without any movement ============ */
+@media (max-width:960px){
+  /* the page never changes overflow/scroll state when the loader leaves */
+  html.is-loading{overflow:visible}
+  /* hero copy and mockup simply fade in, in place: nothing slides, so nothing can jump */
+  [data-hero],.show[data-hero="3"],.is-loaded [data-hero],.is-loaded .show[data-hero="3"]{transform:none!important;filter:none!important}
+  [data-hero]{transition:opacity .8s cubic-bezier(.4,0,.2,1)}
+  [data-hero="1"]{transition-delay:.15s}
+  [data-hero="2"]{transition-delay:.3s}
+  .show[data-hero="3"]{transition:opacity 1s cubic-bezier(.4,0,.2,1) .45s;will-change:opacity}
+}
