@@ -321,6 +321,15 @@
   });
   $$('.tfig').forEach(f => { f.setAttribute('data-line', figLine()); f.setAttribute('data-bg', figBg()); });
   window.__repaintFigs = paintFigs;
+  // keep every figure moving on its own: run Liniqo's looping "tour" (an unseen pointer walking
+  // the figure); a real pointer still takes over on hover and the loop resumes on leave.
+  const autoplayFigs = () => $$('.tfig').forEach(f => {
+    if (f.__auto) return;
+    const t = setInterval(() => { if (f.__liniqo && f.__liniqo.play) { clearInterval(t); f.__auto = 1; if (!reduce) f.__liniqo.play(true); } }, 250);
+    setTimeout(() => clearInterval(t), 20000);
+  });
+  autoplayFigs();
+  new MutationObserver(autoplayFigs).observe(track, { childList: true, subtree: true });
 
   /* ---------- theme switch: circular reveal from the button (View Transitions), cross-fade fallback ---------- */
   const tsw = $('#tswitch');
