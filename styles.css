@@ -1059,3 +1059,36 @@ html:not([data-theme="dark"]) .mailcard:hover{box-shadow:0 0 0 1px rgb(var(--gla
 }
 @media (max-width:960px){ .stack__cards{gap:42svh} }
 @media (min-width:961px){ .stack__cards{gap:clamp(160px,26vh,280px)} }
+/* ============ v38 ============ */
+/* no highlighted text: statement is solid ink (no scroll highlight), no tap flash, neutral selection */
+.statement__text .sw,[data-theme="dark"] .statement__text .sw{color:var(--ink)!important}
+html{-webkit-tap-highlight-color:transparent}
+::selection{background:rgba(14,17,22,.1);color:inherit}
+[data-theme="dark"] ::selection{background:rgba(255,255,255,.16);color:inherit}
+/* heading kerning: real kerning on, gentle tracking that never lets glyphs touch */
+.hero__title,.h2,.philo__title,.cta__copy h2,.scard h3,.tcard h3,.tenet h3{font-kerning:normal;font-feature-settings:"kern" 1,"liga" 1;text-rendering:optimizeLegibility;letter-spacing:-.012em;word-spacing:-.02em}
+.hero__title .w{padding-right:.02em}
+/* mobile rhythm: one consistent section spacing */
+@media (max-width:960px){
+  .statement{padding:76px 0 64px}
+  .statement .wrap{gap:24px}
+  .lab{padding:76px 0 72px}
+  .lab__head{margin-bottom:36px;gap:16px}
+  .tech__pin{padding:76px 0 56px}
+  .tech__intro{gap:16px}
+  .philo{padding:76px 0 56px}
+  .cta{padding:24px 0}
+  .contact{padding:56px 0 76px}
+  .foot{padding-top:56px}
+  .stat{padding:22px 0}
+  /* portfolio card: breathing room above and below the content */
+  .scard__media{padding-top:16px}
+  .scard__copy{padding:24px 22px 26px}
+  .scard__top{margin-bottom:2px}
+}
+@media (max-width:960px) and (max-height:760px){
+  .scard__copy{padding:18px 18px 20px}
+  .scard__media{padding-top:12px}
+}
+@media (max-width:400px){ .scard__copy{padding-inline:18px} }
+.philo__title em,.h2 em,h1 em,h2 em{color:inherit;-webkit-text-fill-color:currentColor;background:none;font-style:normal}
