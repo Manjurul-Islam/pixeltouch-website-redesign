@@ -1171,3 +1171,8 @@ html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(
   [data-hero="2"]{transition-delay:.3s}
   .show[data-hero="3"]{transition:opacity 1s cubic-bezier(.4,0,.2,1) .45s;will-change:opacity}
 }
+/* ============ v45: hero buttons on phones = natural width of "Download our apps" ============ */
+@media (max-width:960px){
+  .hero__ctas{display:grid;grid-template-columns:max-content;justify-content:center;width:auto;margin-inline:auto}
+  .hero__ctas .btn{width:100%}
+}
