@@ -899,3 +899,43 @@ html.theme-fade,html.theme-fade *,html.theme-fade *::before,html.theme-fade *::a
   .tcard h3,.tcard p{margin-inline:14px}
   .tcard p{margin-top:6px}
 }
+
+/* ============ v27 ============ */
+/* hero: video stays fully clear to 60%, then a long smootherstep fade into the page */
+.hero__media{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 60%,rgba(0,0,0,0.999) 61.7%,rgba(0,0,0,0.995) 63.3%,rgba(0,0,0,0.984) 65.0%,rgba(0,0,0,0.965) 66.7%,rgba(0,0,0,0.935) 68.3%,rgba(0,0,0,0.896) 70.0%,rgba(0,0,0,0.848) 71.7%,rgba(0,0,0,0.790) 73.3%,rgba(0,0,0,0.725) 75.0%,rgba(0,0,0,0.653) 76.7%,rgba(0,0,0,0.578) 78.3%,rgba(0,0,0,0.500) 80.0%,rgba(0,0,0,0.422) 81.7%,rgba(0,0,0,0.347) 83.3%,rgba(0,0,0,0.275) 85.0%,rgba(0,0,0,0.210) 86.7%,rgba(0,0,0,0.152) 88.3%,rgba(0,0,0,0.104) 90.0%,rgba(0,0,0,0.065) 91.7%,rgba(0,0,0,0.035) 93.3%,rgba(0,0,0,0.016) 95.0%,rgba(0,0,0,0.005) 96.7%,rgba(0,0,0,0.001) 98.3%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(180deg,#000 0%,#000 60%,rgba(0,0,0,0.999) 61.7%,rgba(0,0,0,0.995) 63.3%,rgba(0,0,0,0.984) 65.0%,rgba(0,0,0,0.965) 66.7%,rgba(0,0,0,0.935) 68.3%,rgba(0,0,0,0.896) 70.0%,rgba(0,0,0,0.848) 71.7%,rgba(0,0,0,0.790) 73.3%,rgba(0,0,0,0.725) 75.0%,rgba(0,0,0,0.653) 76.7%,rgba(0,0,0,0.578) 78.3%,rgba(0,0,0,0.500) 80.0%,rgba(0,0,0,0.422) 81.7%,rgba(0,0,0,0.347) 83.3%,rgba(0,0,0,0.275) 85.0%,rgba(0,0,0,0.210) 86.7%,rgba(0,0,0,0.152) 88.3%,rgba(0,0,0,0.104) 90.0%,rgba(0,0,0,0.065) 91.7%,rgba(0,0,0,0.035) 93.3%,rgba(0,0,0,0.016) 95.0%,rgba(0,0,0,0.005) 96.7%,rgba(0,0,0,0.001) 98.3%,rgba(0,0,0,0.000) 100.0%)}
+.hero__veil{background:radial-gradient(85% 75% at 50% 34%,rgb(var(--glass-rgb) / .3),rgb(var(--glass-rgb) / .16) 40%,rgb(var(--glass-rgb) / .06) 70%,rgb(var(--glass-rgb) / 0) 100%)}
+[data-theme="dark"] .hero__media::after{background:radial-gradient(90% 80% at 50% 36%,rgba(6,8,11,.26),rgba(6,8,11,.14) 40%,rgba(6,8,11,.05) 72%,rgba(6,8,11,0) 100%),linear-gradient(180deg,rgba(6,8,11,.16),rgba(6,8,11,.05) 40%,rgba(6,8,11,0) 65%)}
+/* technology: header is hidden while the section is pinned → reclaim the top, cards get taller */
+@media (min-width:961px){
+  .tech__pin{padding-top:clamp(56px,7.5vh,96px)}
+  .tcard{max-height:calc(var(--cw) * 1.75);container-type:inline-size}
+}
+@media (min-width:961px) and (max-width:1440px){ .tech__pin{padding-top:clamp(52px,6.5vh,72px)} }
+/* card text sized to the card itself: titles stay one line, descriptions three, every breakpoint */
+.tcard{container-type:inline-size}
+.tcard h3{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(17px,5.6cqi,30px)}
+.tcard p{font-size:clamp(13.5px,3.9cqi,17.5px);line-height:1.5;min-height:4.5em}
+@container (max-width:340px){ .tcard p{min-height:6em} }
+
+/* ============ v27 ============ */
+/* hero: clear to ~60%, then a long smootherstep fade (24 stops) into the page colour; lighter shading in both themes */
+.hero__media{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 58%,rgba(0,0,0,0.999) 59.8%,rgba(0,0,0,0.995) 61.5%,rgba(0,0,0,0.984) 63.2%,rgba(0,0,0,0.965) 65.0%,rgba(0,0,0,0.935) 66.8%,rgba(0,0,0,0.896) 68.5%,rgba(0,0,0,0.848) 70.2%,rgba(0,0,0,0.790) 72.0%,rgba(0,0,0,0.725) 73.8%,rgba(0,0,0,0.653) 75.5%,rgba(0,0,0,0.578) 77.2%,rgba(0,0,0,0.500) 79.0%,rgba(0,0,0,0.422) 80.8%,rgba(0,0,0,0.347) 82.5%,rgba(0,0,0,0.275) 84.2%,rgba(0,0,0,0.210) 86.0%,rgba(0,0,0,0.152) 87.8%,rgba(0,0,0,0.104) 89.5%,rgba(0,0,0,0.065) 91.2%,rgba(0,0,0,0.035) 93.0%,rgba(0,0,0,0.016) 94.8%,rgba(0,0,0,0.005) 96.5%,rgba(0,0,0,0.001) 98.2%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(180deg,#000 0%,#000 58%,rgba(0,0,0,0.999) 59.8%,rgba(0,0,0,0.995) 61.5%,rgba(0,0,0,0.984) 63.2%,rgba(0,0,0,0.965) 65.0%,rgba(0,0,0,0.935) 66.8%,rgba(0,0,0,0.896) 68.5%,rgba(0,0,0,0.848) 70.2%,rgba(0,0,0,0.790) 72.0%,rgba(0,0,0,0.725) 73.8%,rgba(0,0,0,0.653) 75.5%,rgba(0,0,0,0.578) 77.2%,rgba(0,0,0,0.500) 79.0%,rgba(0,0,0,0.422) 80.8%,rgba(0,0,0,0.347) 82.5%,rgba(0,0,0,0.275) 84.2%,rgba(0,0,0,0.210) 86.0%,rgba(0,0,0,0.152) 87.8%,rgba(0,0,0,0.104) 89.5%,rgba(0,0,0,0.065) 91.2%,rgba(0,0,0,0.035) 93.0%,rgba(0,0,0,0.016) 94.8%,rgba(0,0,0,0.005) 96.5%,rgba(0,0,0,0.001) 98.2%,rgba(0,0,0,0.000) 100.0%)}
+.hero__veil{background:radial-gradient(85% 75% at 50% 34%,rgb(var(--glass-rgb) / .3),rgb(var(--glass-rgb) / .14) 45%,rgb(var(--glass-rgb) / .04) 75%,rgb(var(--glass-rgb) / 0) 100%)}
+[data-theme="dark"] .hero__veil{background:none}
+[data-theme="dark"] .hero__media::after{background:radial-gradient(90% 80% at 50% 36%,rgba(6,8,11,.24),rgba(6,8,11,.12) 45%,rgba(6,8,11,.04) 80%,rgba(6,8,11,0) 100%),linear-gradient(180deg,rgba(6,8,11,.16),rgba(6,8,11,.05) 40%,rgba(6,8,11,0) 65%)}
+
+/* technology: taller cards (tighter frame around them), titles size to their card */
+.tcard{container-type:inline-size}
+.tcard h3{white-space:normal;text-wrap:balance;font-size:clamp(17px,calc((100cqi - 48px) / 14.3),24px)}
+.tcard p{text-wrap:pretty}
+@media (min-width:961px){
+  .tech__pin{padding:clamp(76px,9vh,96px) 0 clamp(20px,2.8vh,32px)}
+  .tech__viewport{margin-top:clamp(36px,5vh,56px)}
+  .tech__foot{margin-top:clamp(40px,5vh,64px)}
+  .tcard{max-height:calc(var(--cw) * 1.75)}
+  .tcard__n{margin:16px 14px 8px}
+  .tcard h3,.tcard p{margin-inline:14px}
+  .tcard p{margin-top:6px}
+}
+@media (min-width:2200px){ .tcard h3{font-size:clamp(22px,calc((100cqi - 56px) / 14.3),32px)} }
+@media (max-width:960px){ .tech__track{align-items:stretch} .tcard{display:flex;flex-direction:column} .tcard__art{flex:none} }
