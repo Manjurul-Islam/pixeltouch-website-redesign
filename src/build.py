@@ -132,6 +132,24 @@ def lab_dock():
         for i, a in enumerate(APPS))
 
 
+SPLITS = {
+    "Blur Photo Editor": ("Blur Photo", "Editor"),
+    "Blur Video - AI Blur Maker": ("Blur Video –", "AI Blur Maker"),
+    "Inva: Invitation Maker + RSVP": ("Inva: Invitation", "Maker + RSVP"),
+    "PixelLab: AI Background Eraser": ("PixelLab: AI", "Background Eraser"),
+    "Dark Table - Presets for LR": ("Dark Table –", "Presets for LR"),
+    "AI Art: AI Photo Generator": ("AI Art: AI", "Photo Generator"),
+    "KapiCam - Filters for Pictures": ("KapiCam – Filters", "for Pictures"),
+    "Vidz: Reels Templates & Maker": ("Vidz: Reels", "Templates & Maker"),
+    "Unroll: Carousel Collage Maker": ("Unroll: Carousel", "Collage Maker"),
+}
+
+
+def title2(name):
+    a, b = SPLITS.get(name, (name, ""))
+    return f'<span>{e(a)}</span> <span>{e(b)}</span>'
+
+
 def stack_cards():
     out = []
     n = len(APPS)
@@ -145,7 +163,7 @@ def stack_cards():
               <img class="scard__icon" src="assets/icons/{a["key"]}.webp" alt="" width="72" height="72" loading="lazy">
               <span class="scard__meta"><b>{e(a["cat"])}</b><span>{i+1:02d} / {n:02d}</span></span>
             </div>
-            <h3>{e(a["name"])}</h3>
+            <h3 class="scard__title">{title2(a["name"])}</h3>
             <p>{e(a["desc"])}</p>
             <dl class="scard__stats">{dl}<div><dt>Rating</dt><dd>{a["rating"]}<i>{STAR}</i></dd></div></dl>
             <a class="btn btn--dark" href="{a["url"]}" target="_blank" rel="noopener">{APPLE}<span>Get it on the App Store</span><b class="btn__arrow">{ARROW}</b></a>

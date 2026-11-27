@@ -1024,3 +1024,15 @@ html:not([data-theme="dark"]) .mailcard:hover{box-shadow:0 0 0 1px rgb(var(--gla
 .hero__title{line-height:1}
 .h2,.philo__title,.cta__copy h2{line-height:1.02}
 .loader__word[lang="en"],.loader__word[lang="es"],.loader__word[lang="fr"],.loader__word[lang="it"],.loader__word[lang="ru"]{font-family:var(--font-head);font-weight:400;letter-spacing:-.02em}
+/* ============ v36 ============ */
+/* headings: tighter tracking, word spacing and leading */
+.hero__title,.h2,.philo__title,.cta__copy h2{letter-spacing:-.035em;word-spacing:-.06em;line-height:.98}
+.scard h3,.tcard h3,.tenet h3{letter-spacing:-.03em;word-spacing:-.05em;line-height:1.04}
+/* portfolio card titles: always exactly two lines, sized to the copy column */
+.scard__copy{container-type:inline-size}
+.scard h3.scard__title{max-width:none;text-wrap:nowrap;font-size:min(clamp(26px,calc(16px + 2.3vw),50px),10.6cqi)}
+.scard__title > span{display:block;white-space:nowrap}
+@media (min-width:2200px){ .scard h3.scard__title{font-size:min(62px,10.6cqi)} }
+/* hero subtitle: wide, soft halo */
+.hero__lede{text-shadow:0 0 42px rgb(var(--glass-rgb) / .95),0 0 22px rgb(var(--glass-rgb) / .85),0 0 8px rgb(var(--glass-rgb) / .6)}
+[data-theme="dark"] .hero__lede{text-shadow:0 0 44px rgba(6,8,11,.7),0 0 22px rgba(6,8,11,.55),0 1px 8px rgba(6,8,11,.45)}
