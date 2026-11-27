@@ -117,7 +117,7 @@
     words = $$('.sw, .ico', stmt);
   }
 
-  const markLoaded = () => root.classList.add('is-loaded');
+  const markLoaded = () => { if (root.classList.contains('is-loaded')) return; root.classList.add('is-loaded'); setTimeout(() => root.classList.add('title-done'), 2600); };
   (window.__loaderDone || Promise.resolve()).then(() => requestAnimationFrame(() => requestAnimationFrame(markLoaded)));
   setTimeout(markLoaded, 7000);
 
