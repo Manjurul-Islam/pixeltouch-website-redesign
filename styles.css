@@ -1132,3 +1132,16 @@ html{-webkit-tap-highlight-color:transparent}
 /* section tag numbers: optically centred in the circle */
 .kicker > i{display:grid;place-items:center;line-height:1;font-variant-numeric:tabular-nums lining-nums;letter-spacing:0;text-indent:.04em;padding:0}
 .kicker > i{text-box:trim-both cap alphabetic}
+/* ============ v41 ============ */
+/* hero (light): a touch more white at the top */
+html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(var(--glass-rgb) / .42) 0%,rgb(var(--glass-rgb) / .24) 14%,rgb(var(--glass-rgb) / .08) 30%,rgb(var(--glass-rgb) / 0) 44%),radial-gradient(85% 75% at 50% 34%,rgb(var(--glass-rgb) / .3),rgb(var(--glass-rgb) / .14) 45%,rgb(var(--glass-rgb) / .04) 75%,rgb(var(--glass-rgb) / 0) 100%)}
+/* technology: no hover zoom on the drawings; size/centre set by JS */
+.tcard:hover .tfig,.tcard .tfig{--hs:1}
+/* phone portfolio cards: generous space above and below the app info */
+@media (max-width:960px){
+  .scard__in{grid-template-rows:minmax(96px,1fr) auto}
+  .scard__copy{padding:32px 22px 34px;gap:12px}
+}
+@media (max-width:960px) and (max-height:760px){
+  .scard__copy{padding:24px 18px 26px;gap:9px}
+}

@@ -361,11 +361,11 @@
     const u = f.offsetWidth / 400, aw = art.clientWidth, ah = art.clientHeight;
     // equal visual weight: every drawing gets the same footprint (geometric mean of its drawn box),
     // then is capped so it always fits the frame with headroom for its animation
-    const area = Math.sqrt(b.width * b.height) * u, target = Math.sqrt(aw * ah) * .52;
-    const sc = Math.min(target / area, (aw * .86) / (b.width * u), (ah * .7) / (b.height * u));
+    const area = Math.sqrt(b.width * b.height) * u, target = Math.sqrt(aw * ah) * (innerWidth >= 1900 ? .68 : .54);
+    const sc = Math.min(target / area, (aw * .9) / (b.width * u), (ah * .74) / (b.height * u));
     f.style.setProperty('--s', sc.toFixed(3));
     f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
-    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u + ah * .04 / sc).toFixed(1) + 'px');
+    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u).toFixed(1) + 'px');
   };
   const centreAll = () => $$('.tfig').forEach(centreFig);
   let cTimer = 0;
