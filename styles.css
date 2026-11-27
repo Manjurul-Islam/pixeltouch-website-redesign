@@ -1092,3 +1092,34 @@ html{-webkit-tap-highlight-color:transparent}
 }
 @media (max-width:400px){ .scard__copy{padding-inline:18px} }
 .philo__title em,.h2 em,h1 em,h2 em{color:inherit;-webkit-text-fill-color:currentColor;background:none;font-style:normal}
+/* ============ v39 ============ */
+/* titles: weight 500 (hero stays as is); every word capitalised in titles + section tags */
+.h2,.philo__title,.cta__copy h2,.scard h3,.tcard h3,.tenet h3,.foot__brand h2{font-weight:500}
+.scard h3,.tcard h3,.tenet h3{text-transform:capitalize}
+.hero__title{letter-spacing:-.03em}
+/* buttons: no colour change on hover (lift + arrow only) */
+.btn--dark::before{display:none}
+.btn--dark:hover .btn__arrow{background:rgb(var(--on-ink-rgb) / .12)}
+.btn--light:hover{background:rgb(var(--glass-rgb) / .78)}
+.btn--ghost:hover{background:linear-gradient(var(--ghost-a),var(--ghost-b))}
+/* technology titles: never clip descenders */
+.tcard h3{overflow:visible;text-overflow:clip;line-height:1.2;padding-bottom:.08em}
+/* philosophy: no text hover effects; title and description sit closer */
+.tenet:hover h3{transform:none}
+.tenet:hover .tenet__n{color:inherit}
+.tenet:hover p{color:var(--muted)}
+.tenet{grid-template-columns:80px minmax(0,1fr) minmax(240px,1fr);column-gap:28px}
+.philo__head{gap:14px}
+@media (max-width:960px){
+  .tenet{grid-template-columns:50px 1fr;row-gap:6px;column-gap:16px}
+  .tenet p{margin-top:0}
+  /* hero buttons: equal width */
+  .hero__ctas{display:grid;grid-template-columns:1fr;width:min(100%,340px);margin-inline:auto}
+  .hero__ctas .btn{width:100%;justify-content:center}
+  /* mobile memory: no huge filtered/promoted layers in the sticky stack and hero carousel */
+  .scard{will-change:auto}
+  .scard__phone,[data-theme="dark"] .scard__phone{filter:none}
+  .scard__device{filter:drop-shadow(0 18px 20px rgba(20,36,60,.18))}
+  .sdock{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surface)}
+}
+@media (min-width:961px){ .tenet{grid-template-columns:80px minmax(0,clamp(280px,30vw,440px)) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px)} .tenet p{max-width:460px} }

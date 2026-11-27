@@ -134,12 +134,12 @@ def lab_dock():
 
 SPLITS = {
     "Blur Photo Editor": ("Blur Photo", "Editor"),
-    "Blur Video - AI Blur Maker": ("Blur Video –", "AI Blur Maker"),
+    "Blur Video - AI Blur Maker": ("Blur Video", "AI Blur Maker"),
     "Inva: Invitation Maker + RSVP": ("Inva: Invitation", "Maker + RSVP"),
     "PixelLab: AI Background Eraser": ("PixelLab: AI", "Background Eraser"),
-    "Dark Table - Presets for LR": ("Dark Table –", "Presets for LR"),
+    "Dark Table - Presets for LR": ("Dark Table", "Presets for LR"),
     "AI Art: AI Photo Generator": ("AI Art: AI", "Photo Generator"),
-    "KapiCam - Filters for Pictures": ("KapiCam – Filters", "for Pictures"),
+    "KapiCam - Filters for Pictures": ("KapiCam", "Filters for Pictures"),
     "Vidz: Reels Templates & Maker": ("Vidz: Reels", "Templates & Maker"),
     "Unroll: Carousel Collage Maker": ("Unroll: Carousel", "Collage Maker"),
 }

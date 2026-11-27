@@ -294,6 +294,9 @@
       for (let j = i + 1; j < scards.length; j++) depth += e[j];
       depth = Math.min(depth, 3);
       c.style.setProperty('--d', depth.toFixed(3));
+      // fully covered cards leave the render tree (keeps mobile GPU memory flat while scrolling the stack)
+      const hide = depth >= 1.2 ? 'hidden' : '';
+      if (c.style.visibility !== hide) c.style.visibility = hide;
       c.querySelector('.scard__phone').style.setProperty('--e', (reduce ? 1 : e[i]).toFixed(3));
       if (e[i] > .55) active = i;
     });
@@ -304,7 +307,9 @@
     if (lenis) lenis.scrollTo(y, { duration: 1.2 }); else scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
   }));
   layoutStack(); updateStack();
-  addEventListener('resize', () => { layoutStack(); updateStack(); });
+  // mobile browsers fire resize as the URL bar slides; only re-measure when the width really changes
+  let stackW = innerWidth;
+  addEventListener('resize', () => { if (Math.abs(innerWidth - stackW) < 2 && matchMedia('(pointer: coarse)').matches) return; stackW = innerWidth; layoutStack(); updateStack(); });
   addEventListener('load', () => { layoutStack(); updateStack(); });
   addEventListener('scroll', () => requestAnimationFrame(updateStack), { passive: true });
   if (lenis) lenis.on('scroll', updateStack);
