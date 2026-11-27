@@ -312,13 +312,14 @@
   sizeTech(); addEventListener('resize', sizeTech); addEventListener('load', sizeTech);
   let techP = 0, techPT = 0;
   // Liniqo live figures: crisper line colour per theme; re-mounted when the theme flips
-  const figLine = () => root.dataset.theme === 'dark' ? '#8b93a1' : '#5d6673';
+  const figLine = () => root.dataset.theme === 'dark' ? '#9aa3b0' : '#6b7480';
+  const figBg = () => root.dataset.theme === 'dark' ? '#161b22' : '#ffffff';
   const paintFigs = () => $$('.tfig').forEach(f => {
-    f.setAttribute('data-line', figLine());
+    f.setAttribute('data-line', figLine()); f.setAttribute('data-bg', figBg());
     const fresh = f.cloneNode(false);            // embed.js re-scans added nodes
     f.replaceWith(fresh);
   });
-  $$('.tfig').forEach(f => f.setAttribute('data-line', figLine()));
+  $$('.tfig').forEach(f => { f.setAttribute('data-line', figLine()); f.setAttribute('data-bg', figBg()); });
   window.__repaintFigs = paintFigs;
 
   /* ---------- theme switch: circular reveal from the button (View Transitions), cross-fade fallback ---------- */
