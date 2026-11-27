@@ -354,20 +354,32 @@
   autoplayFigs();
   // optical centring: fit each figure's drawn artwork (not its padded 400×320 box) to the frame
   const centreFig = f => {
-    const svg = f.querySelector('svg'), art = f.parentElement;
-    if (!svg || !art) return;
-    if (!f.__bb) { try { const b = svg.getBBox(); if (b.width) f.__bb = b; } catch (_) {} }
-    const b = f.__bb; if (!b) return;
-    const u = f.offsetWidth / 400, aw = art.clientWidth, ah = art.clientHeight;
-    // equal visual weight: every drawing gets the same footprint (geometric mean of its drawn box),
-    // then is capped so it always fits the frame with headroom for its animation
-    const area = Math.sqrt(b.width * b.height) * u, target = Math.sqrt(aw * ah) * (innerWidth >= 1900 ? .68 : .54);
-    const sc = Math.min(target / area, (aw * .9) / (b.width * u), (ah * .74) / (b.height * u));
-    f.style.setProperty('--s', sc.toFixed(3));
-    f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
-    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u).toFixed(1) + 'px');
+    const svg = f.querySelector('svg');
+    if (svg && !f.__bb) { try { const b = svg.getBBox(); if (b.width) f.__bb = b; } catch (_) {} }
   };
-  const centreAll = () => $$('.tfig').forEach(centreFig);
+  // Every drawing gets the SAME visual footprint (geometric mean of its drawn box) and sits on the
+  // frame's exact centre. The shared footprint is the largest one that still fits every drawing
+  // inside its frame (with animation headroom), so no single figure is capped smaller than the rest.
+  const centreAll = () => {
+    const figs = $$('.tfig');
+    figs.forEach(centreFig);
+    const ready = figs.filter(f => f.__bb && f.parentElement.clientWidth);
+    if (!ready.length) return;
+    const fitW = innerWidth >= 1900 ? .9 : .82, fitH = innerWidth >= 1900 ? .74 : .66;
+    let foot = Infinity;
+    ready.forEach(f => {
+      const b = f.__bb, u = f.offsetWidth / 400, aw = f.parentElement.clientWidth, ah = f.parentElement.clientHeight;
+      const maxS = Math.min((aw * fitW) / (b.width * u), (ah * fitH) / (b.height * u));
+      foot = Math.min(foot, Math.sqrt(b.width * b.height) * u * maxS / Math.sqrt(aw * ah));
+    });
+    ready.forEach(f => {
+      const b = f.__bb, u = f.offsetWidth / 400, aw = f.parentElement.clientWidth, ah = f.parentElement.clientHeight;
+      const sc = foot * Math.sqrt(aw * ah) / (Math.sqrt(b.width * b.height) * u);
+      f.style.setProperty('--s', sc.toFixed(3));
+      f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
+      f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u).toFixed(1) + 'px');
+    });
+  };
   let cTimer = 0;
   const pollCentre = () => {
     clearInterval(cTimer);

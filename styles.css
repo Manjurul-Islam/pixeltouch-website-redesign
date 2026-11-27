@@ -1145,3 +1145,15 @@ html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(
 @media (max-width:960px) and (max-height:760px){
   .scard__copy{padding:24px 18px 26px;gap:9px}
 }
+/* ============ v42: no card hover effect below 1920px ============ */
+@media (max-width:1919px){
+  .tcard:hover,.js .tech.is-in .tcard:hover,.tcard:active,
+  html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active,
+  [data-theme="dark"] .tcard:hover{transform:none}
+  html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:var(--sh-card)}
+  [data-theme="dark"] .tcard:hover{box-shadow:0 0 0 1px var(--line-2) inset}
+  .tcard:hover .tcard__n{color:inherit}
+}
+@media (max-width:960px){
+  html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:0 0 0 1px rgba(14,17,22,.05),0 14px 36px -22px rgba(20,36,60,.08),0 34px 64px -42px rgba(20,36,60,.07)}
+}
