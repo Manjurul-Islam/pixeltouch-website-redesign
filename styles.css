@@ -994,3 +994,19 @@ html.theme-fade,html.theme-fade *,html.theme-fade *::before,html.theme-fade *::a
   .sdock__item{width:72px;height:72px}
   .sdock__item img{width:52px;height:52px;border-radius:14px}
 }
+/* ============ v34: light-mode card shadows — wide, airy, low intensity (all breakpoints) ============ */
+html:not([data-theme="dark"]){
+  --sh-card:0 0 0 1px rgba(14,17,22,.05),0 2px 4px rgba(20,36,60,.02),0 18px 48px -22px rgba(20,36,60,.08),0 46px 90px -50px rgba(20,36,60,.07);
+  --sh-card-hover:0 0 0 1px rgba(14,17,22,.06),0 4px 10px rgba(20,36,60,.025),0 28px 70px -30px rgba(20,36,60,.11),0 60px 110px -56px rgba(20,36,60,.09);
+}
+html:not([data-theme="dark"]) .tcard{box-shadow:var(--sh-card)}
+html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:var(--sh-card-hover)}
+html:not([data-theme="dark"]) .scard__in{box-shadow:0 0 0 1px rgba(14,17,22,.05) inset,0 2px 4px rgba(20,36,60,.02),0 30px 70px -36px rgba(20,36,60,.10),0 70px 120px -70px rgba(20,36,60,.08)}
+html:not([data-theme="dark"]) .contact__card{box-shadow:var(--sh-card)}
+html:not([data-theme="dark"]) .mailcard{box-shadow:0 0 0 1px rgb(var(--glass-rgb) / .8) inset,0 14px 36px -22px rgba(20,36,60,.12)}
+html:not([data-theme="dark"]) .mailcard:hover{box-shadow:0 0 0 1px rgb(var(--glass-rgb)) inset,0 22px 50px -26px rgba(20,36,60,.16)}
+@media (max-width:960px){
+  html:not([data-theme="dark"]) .tcard{box-shadow:0 0 0 1px rgba(14,17,22,.05),0 14px 36px -22px rgba(20,36,60,.08),0 34px 64px -42px rgba(20,36,60,.07)}
+  html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:0 0 0 1px rgba(14,17,22,.06),0 20px 46px -26px rgba(20,36,60,.11),0 40px 74px -46px rgba(20,36,60,.08)}
+  html:not([data-theme="dark"]) .scard__in{box-shadow:0 0 0 1px rgba(14,17,22,.05) inset,0 22px 50px -30px rgba(20,36,60,.10),0 48px 90px -56px rgba(20,36,60,.07)}
+}
