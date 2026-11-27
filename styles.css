@@ -1157,3 +1157,6 @@ html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(
 @media (max-width:960px){
   html:not([data-theme="dark"]) .tcard:hover,html:not([data-theme="dark"]).js .tech.is-in .tcard:hover,html:not([data-theme="dark"]) .tcard:active{box-shadow:0 0 0 1px rgba(14,17,22,.05),0 14px 36px -22px rgba(20,36,60,.08),0 34px 64px -42px rgba(20,36,60,.07)}
 }
+/* ============ v43: illustration never zooms on hover (older hover rules replaced the transform) ============ */
+.tcard .tfig,.tcard:hover .tfig,.tcard:active .tfig{transform:scale(var(--s,1)) translate(var(--dx,0px),var(--dy,0px));transition:none}
+@media (max-width:1919px){ .tcard .tfig{pointer-events:none} }
