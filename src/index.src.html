@@ -32,11 +32,11 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet"></noscript>
-<link rel="preload" as="image" href="assets/hero-poster.webp?v=4" imagesrcset="assets/hero-poster-sm.webp?v=4 960w, assets/hero-poster.webp?v=4 1920w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="assets/hero-poster.webp?v=5" imagesrcset="assets/hero-poster-sm.webp?v=5 960w, assets/hero-poster.webp?v=5 1920w" imagesizes="100vw" fetchpriority="high">
 <link rel="preload" as="script" href="assets/vendor/lenis.min.js">
 <link rel="stylesheet" href="styles.min.css?v={{VER}}">
 <script type="application/ld+json">{{JSONLD}}</script>
-<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('pt-theme');if(t==='dark'){document.documentElement.dataset.theme='dark';document.querySelector('meta[name=theme-color]').content='#0a0c0f'}}catch(e){}</script>
+<script>document.documentElement.classList.add('js');if('scrollRestoration' in history)history.scrollRestoration='manual';try{var t=sessionStorage.getItem('pt-theme');if(t==='dark'){document.documentElement.dataset.theme='dark';document.querySelector('meta[name=theme-color]').content='#0a0c0f'}}catch(e){}</script>
 </head>
 <body>
 <div class="loader" id="loader" role="status" aria-live="polite" aria-label="Loading Pixeltouch">
@@ -125,7 +125,7 @@
 <section class="hero" id="top">
   <div class="hero__top">
     <div class="hero__media" aria-hidden="true">
-      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=4" disablepictureinpicture disableremoteplayback>
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=5" disablepictureinpicture disableremoteplayback>
 
       </video>
       <div class="hero__veil"></div>

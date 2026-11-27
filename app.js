@@ -1,4 +1,4 @@
-/* Pixeltouch v2 — interactions */
+/* Pixeltouch v2 interactions */
 (() => {
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -8,6 +8,12 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   const APPS = JSON.parse($('#appData').textContent);
   const root = document.documentElement;
+
+  /* ---------- every load starts at the top (no restored scroll, no jump to a #hash) ---------- */
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  scrollTo(0, 0);
+  addEventListener('pageshow', e => { if (e.persisted) scrollTo(0, 0); });
+  addEventListener('beforeunload', () => scrollTo(0, 0));
 
   /* ---------- smooth scroll (Lenis) ---------- */
   let lenis = null;
@@ -33,12 +39,12 @@
   // 4K masters, best codec first. Each is only used if this device can decode it smoothly
   // (hardware / power-efficient) — otherwise the 1080p H.264 safety net plays instead.
   const HERO_SRC = [
-    { src: 'assets/hero-4k-av1.mp4?v=3', type: 'video/mp4; codecs="av01.0.12M.10"', br: 4100000 },
-    { src: 'assets/hero-4k-hevc.mp4?v=3', type: 'video/mp4; codecs="hvc1.1.6.L153.B0"', br: 5900000 },
-    { src: 'assets/hero-4k.mp4?v=3', type: 'video/mp4; codecs="avc1.640033"', br: 10200000 },
+    { src: 'assets/hero-4k-av1.mp4?v=4', type: 'video/mp4; codecs="av01.0.12M.10"', br: 4100000 },
+    { src: 'assets/hero-4k-hevc.mp4?v=4', type: 'video/mp4; codecs="hvc1.1.6.L153.B0"', br: 5900000 },
+    { src: 'assets/hero-4k.mp4?v=4', type: 'video/mp4; codecs="avc1.640033"', br: 10200000 },
   ];
-  const HERO_SAFE = 'assets/hero-1080.mp4?v=3';
-  const HERO_720 = 'assets/hero-720.mp4?v=1';
+  const HERO_SAFE = 'assets/hero-1080.mp4?v=4';
+  const HERO_720 = 'assets/hero-720.mp4?v=2';
   const pickHeroSrc = async () => {
     // never decode more pixels than the screen can show: phones/tablets get 720p/1080p, 4K only for big, sharp screens
     const px = Math.max(innerWidth, innerHeight * 16 / 9) * Math.min(devicePixelRatio || 1, 2);
@@ -353,10 +359,13 @@
     if (!f.__bb) { try { const b = svg.getBBox(); if (b.width) f.__bb = b; } catch (_) {} }
     const b = f.__bb; if (!b) return;
     const u = f.offsetWidth / 400, aw = art.clientWidth, ah = art.clientHeight;
-    const sc = Math.max(.9, Math.min(1.6, (aw * .8) / (b.width * u), (ah * .64) / (b.height * u)));
+    // equal visual weight: every drawing gets the same footprint (geometric mean of its drawn box),
+    // then is capped so it always fits the frame with headroom for its animation
+    const area = Math.sqrt(b.width * b.height) * u, target = Math.sqrt(aw * ah) * .52;
+    const sc = Math.min(target / area, (aw * .86) / (b.width * u), (ah * .7) / (b.height * u));
     f.style.setProperty('--s', sc.toFixed(3));
     f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
-    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u + ah * .05 / sc).toFixed(1) + 'px');
+    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u + ah * .04 / sc).toFixed(1) + 'px');
   };
   const centreAll = () => $$('.tfig').forEach(centreFig);
   let cTimer = 0;
@@ -381,7 +390,7 @@
   };
   const applyTheme = dark => {
     if (dark) root.dataset.theme = 'dark'; else delete root.dataset.theme;
-    try { localStorage.setItem('pt-theme', dark ? 'dark' : 'light'); } catch (_) {}
+    try { sessionStorage.setItem('pt-theme', dark ? 'dark' : 'light'); } catch (_) {}
     syncSwitch(); window.__repaintFigs?.();
   };
   tsw.addEventListener('click', () => {

@@ -150,7 +150,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* ============ HERO ============ */
 .hero{position:relative;isolation:isolate;overflow-x:clip;padding-bottom:clamp(36px,5vw,64px)}
 .hero__top{position:relative;isolation:isolate;padding:clamp(128px,17vh,168px) 0 clamp(72px,10vh,112px)}
-.hero__media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:url(assets/hero-poster.webp?v=4) 50% 55%/cover}
+.hero__media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:url(assets/hero-poster.webp?v=5) 50% 55%/cover}
 .hero__media video{width:100%;height:100%;object-fit:cover;object-position:50% 55%;opacity:0;transition:opacity 1.6s var(--ease);
   transform:scale(calc(1.04 + var(--hp,0)*.06)) translateY(calc(var(--hp,0)*40px));will-change:transform}
 .hero__media video.is-ready{opacity:1}
@@ -1123,3 +1123,12 @@ html{-webkit-tap-highlight-color:transparent}
   .sdock{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surface)}
 }
 @media (min-width:961px){ .tenet{grid-template-columns:80px minmax(0,clamp(280px,30vw,440px)) minmax(0,1fr);column-gap:clamp(20px,2.4vw,40px)} .tenet p{max-width:460px} }
+/* ============ v40 ============ */
+.hero__title{font-size:clamp(36px,calc(16px + 5.6vw),92px)}
+@media (max-width:400px){ .hero__title{font-size:34px} }
+@media (min-width:2200px){ .hero__title{font-size:112px} }
+/* one tracking for every title, matching the hero */
+.hero__title,.h2,.philo__title,.cta__copy h2,.scard h3,.tcard h3,.tenet h3,.foot__brand h2{letter-spacing:-.03em;word-spacing:-.02em}
+/* section tag numbers: optically centred in the circle */
+.kicker > i{display:grid;place-items:center;line-height:1;font-variant-numeric:tabular-nums lining-nums;letter-spacing:0;text-indent:.04em;padding:0}
+.kicker > i{text-box:trim-both cap alphabetic}
