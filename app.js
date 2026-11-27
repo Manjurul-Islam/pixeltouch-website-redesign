@@ -365,7 +365,7 @@
     figs.forEach(centreFig);
     const ready = figs.filter(f => f.__bb && f.parentElement.clientWidth);
     if (!ready.length) return;
-    const fitW = innerWidth >= 1900 ? .9 : .82, fitH = innerWidth >= 1900 ? .74 : .66;
+    const fitW = innerWidth >= 1900 ? .9 : .94, fitH = innerWidth >= 1900 ? .74 : .8;
     let foot = Infinity;
     ready.forEach(f => {
       const b = f.__bb, u = f.offsetWidth / 400, aw = f.parentElement.clientWidth, ah = f.parentElement.clientHeight;
