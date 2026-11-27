@@ -880,3 +880,22 @@ html.theme-fade,html.theme-fade *,html.theme-fade *::before,html.theme-fade *::a
 .tcard:hover .tfig{transform:scale(1.18)}
 .hero__lede{color:var(--ink-2);text-shadow:0 0 22px rgb(var(--glass-rgb) / .95),0 0 8px rgb(var(--glass-rgb) / .8)}
 [data-theme="dark"] .hero__lede{color:#d5dce4;text-shadow:0 1px 16px rgba(6,8,11,.55)}
+
+/* ============ v26: hero blends into the page via a mask (no coloured ramp → no band, exact colour match) ============ */
+.hero__media{-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,0.999) 52.5%,rgba(0,0,0,0.991) 55.0%,rgba(0,0,0,0.973) 57.5%,rgba(0,0,0,0.942) 60.0%,rgba(0,0,0,0.896) 62.5%,rgba(0,0,0,0.837) 65.0%,rgba(0,0,0,0.765) 67.5%,rgba(0,0,0,0.683) 70.0%,rgba(0,0,0,0.593) 72.5%,rgba(0,0,0,0.500) 75.0%,rgba(0,0,0,0.407) 77.5%,rgba(0,0,0,0.317) 80.0%,rgba(0,0,0,0.235) 82.5%,rgba(0,0,0,0.163) 85.0%,rgba(0,0,0,0.104) 87.5%,rgba(0,0,0,0.058) 90.0%,rgba(0,0,0,0.027) 92.5%,rgba(0,0,0,0.009) 95.0%,rgba(0,0,0,0.001) 97.5%,rgba(0,0,0,0.000) 100.0%);mask-image:linear-gradient(180deg,#000 0%,#000 50%,rgba(0,0,0,0.999) 52.5%,rgba(0,0,0,0.991) 55.0%,rgba(0,0,0,0.973) 57.5%,rgba(0,0,0,0.942) 60.0%,rgba(0,0,0,0.896) 62.5%,rgba(0,0,0,0.837) 65.0%,rgba(0,0,0,0.765) 67.5%,rgba(0,0,0,0.683) 70.0%,rgba(0,0,0,0.593) 72.5%,rgba(0,0,0,0.500) 75.0%,rgba(0,0,0,0.407) 77.5%,rgba(0,0,0,0.317) 80.0%,rgba(0,0,0,0.235) 82.5%,rgba(0,0,0,0.163) 85.0%,rgba(0,0,0,0.104) 87.5%,rgba(0,0,0,0.058) 90.0%,rgba(0,0,0,0.027) 92.5%,rgba(0,0,0,0.009) 95.0%,rgba(0,0,0,0.001) 97.5%,rgba(0,0,0,0.000) 100.0%)}
+.hero__veil{background:radial-gradient(80% 70% at 50% 34%,rgb(var(--glass-rgb) / .34),rgb(var(--glass-rgb) / .14) 50%,rgb(var(--glass-rgb) / 0) 85%)}
+[data-theme="dark"] .hero__veil{background:none}
+[data-theme="dark"] .hero__media::after{background:radial-gradient(85% 75% at 50% 36%,rgba(6,8,11,.32),rgba(6,8,11,.16) 50%,rgba(6,8,11,.06) 85%),linear-gradient(180deg,rgba(6,8,11,.2),rgba(6,8,11,.06) 45%,rgba(6,8,11,0) 70%)}
+
+/* ============ v26: Technology — taller art at ≤1440, figures optically centred by JS ============ */
+.tfig{transform:scale(calc(var(--s,1.14) * var(--hs,1))) translate(var(--dx,0px),var(--dy,0px));transition:transform 1s var(--ease)}
+.tcard:hover .tfig{--hs:1.04}
+@media (min-width:961px) and (max-width:1440px){
+  .tech__pin{padding-top:clamp(80px,9.5vh,100px)}
+  .tech__viewport{margin-top:clamp(40px,5.6vh,56px)}
+  .tech__foot{margin-top:clamp(44px,5.6vh,56px)}
+  .tcard{padding:8px 8px 18px}
+  .tcard__n{margin:16px 14px 8px}
+  .tcard h3,.tcard p{margin-inline:14px}
+  .tcard p{margin-top:6px}
+}

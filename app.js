@@ -317,8 +317,8 @@
   const paintFigs = () => $$('.tfig').forEach(f => {
     f.setAttribute('data-line', figLine()); f.setAttribute('data-bg', figBg());
     const fresh = f.cloneNode(false);            // embed.js re-scans added nodes
-    f.replaceWith(fresh);
-  });
+    f.replaceWith(fresh); fresh.__auto = 0;
+  }) || window.__pollCentre?.();
   $$('.tfig').forEach(f => { f.setAttribute('data-line', figLine()); f.setAttribute('data-bg', figBg()); });
   window.__repaintFigs = paintFigs;
   // keep every figure moving on its own: run Liniqo's looping "tour" (an unseen pointer walking
@@ -329,6 +329,28 @@
     setTimeout(() => clearInterval(t), 20000);
   });
   autoplayFigs();
+  // optical centring: fit each figure's drawn artwork (not its padded 400×320 box) to the frame
+  const centreFig = f => {
+    const svg = f.querySelector('svg'), art = f.parentElement;
+    if (!svg || !art) return;
+    if (!f.__bb) { try { const b = svg.getBBox(); if (b.width) f.__bb = b; } catch (_) {} }
+    const b = f.__bb; if (!b) return;
+    const u = f.offsetWidth / 400, aw = art.clientWidth, ah = art.clientHeight;
+    const sc = Math.max(1, Math.min(1.7, (aw * .84) / (b.width * u), (ah * .78) / (b.height * u)));
+    f.style.setProperty('--s', sc.toFixed(3));
+    f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
+    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u).toFixed(1) + 'px');
+  };
+  const centreAll = () => $$('.tfig').forEach(centreFig);
+  let cTimer = 0;
+  const pollCentre = () => {
+    clearInterval(cTimer);
+    cTimer = setInterval(() => { centreAll(); if ($$('.tfig').every(f => f.__bb)) clearInterval(cTimer); }, 300);
+    setTimeout(() => clearInterval(cTimer), 20000);
+  };
+  pollCentre();
+  window.__pollCentre = pollCentre;
+  addEventListener('resize', centreAll);
   new MutationObserver(autoplayFigs).observe(track, { childList: true, subtree: true });
 
   /* ---------- theme switch: circular reveal from the button (View Transitions), cross-fade fallback ---------- */
