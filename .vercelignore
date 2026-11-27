@@ -1,2 +1,17 @@
 src/
 assets/src/
+assets/tech/
+assets/screens/aiart.webp
+assets/screens/blur-photo.webp
+assets/screens/blur-video.webp
+assets/screens/darktable.webp
+assets/screens/inva.webp
+assets/screens/kapicam.webp
+assets/screens/pixellab.webp
+assets/screens/unroll.webp
+assets/screens/vidz.webp
+assets/hero.mp4
+assets/hero.webm
+styles.css
+app.js
+README.md

@@ -150,7 +150,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 /* ============ HERO ============ */
 .hero{position:relative;isolation:isolate;overflow-x:clip;padding-bottom:clamp(36px,5vw,64px)}
 .hero__top{position:relative;isolation:isolate;padding:clamp(128px,17vh,168px) 0 clamp(72px,10vh,112px)}
-.hero__media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:url(assets/hero-poster.webp?v=3) 50% 55%/cover}
+.hero__media{position:absolute;inset:0;z-index:-1;overflow:hidden;background:url(assets/hero-poster.webp?v=4) 50% 55%/cover}
 .hero__media video{width:100%;height:100%;object-fit:cover;object-position:50% 55%;opacity:0;transition:opacity 1.6s var(--ease);
   transform:scale(calc(1.04 + var(--hp,0)*.06)) translateY(calc(var(--hp,0)*40px));will-change:transform}
 .hero__media video.is-ready{opacity:1}
@@ -945,3 +945,23 @@ html.theme-fade,html.theme-fade *,html.theme-fade *::before,html.theme-fade *::a
 .mega__stats{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
 .mega__stats > span{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
 .mega__stats i{width:3px;height:3px;border-radius:50%;background:var(--soft);flex:none}
+
+/* ============ v31 ============ */
+/* tech: room above the row so a lifted card is never clipped; softer, wider light-mode shadow */
+@media (min-width:961px){
+  .tech__viewport{padding-top:16px;padding-bottom:12px;margin-top:calc(clamp(36px,5vh,56px) - 16px)}
+  .tech__foot{margin-top:calc(clamp(40px,5vh,64px) - 12px)}
+}
+.tcard{box-shadow:0 0 0 1px var(--line),0 1px 2px rgba(20,36,60,.03),0 10px 30px -18px rgba(20,36,60,.10)}
+.tcard:hover,.js .tech.is-in .tcard:hover{transform:translateY(-6px);box-shadow:0 0 0 1px var(--line),0 2px 6px rgba(20,36,60,.03),0 26px 60px -26px rgba(20,36,60,.16),0 50px 90px -50px rgba(20,36,60,.12)}
+[data-theme="dark"] .tcard:hover,[data-theme="dark"] .js .tech.is-in .tcard:hover{box-shadow:0 0 0 1px var(--line-2) inset,0 30px 70px -30px rgba(0,0,0,.7)}
+.tcard:hover .tfig{--hs:1}
+/* rendering: skip work for off-screen sections */
+.philo,.cta,.contact,.foot{content-visibility:auto;contain-intrinsic-size:auto 900px}
+/* loader timing matched to the 200ms word step */
+.loader__word.is-on{transition:opacity .18s cubic-bezier(.2,.7,.2,1),filter .2s cubic-bezier(.2,.7,.2,1),transform .24s cubic-bezier(.2,.7,.2,1);animation:helloSheen .24s linear both}
+.loader__word.is-off{transition:opacity .16s ease,filter .18s ease,transform .22s ease}
+/* statement words: readable even before they ink in */
+.statement__text .sw{color:rgb(var(--ink-rgb) / calc(.47 + var(--o,0)*.53))}
+[data-theme="dark"] .statement__text .sw{color:rgb(var(--ink-rgb) / calc(.45 + var(--o,0)*.55))}
+.foot h4,.foot__legal{color:var(--muted)}

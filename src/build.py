@@ -44,8 +44,34 @@ def hero_cards():
     for i, a in enumerate(APPS):
         lazy = ""  # all eager: cards travel through view, lazy pop-in would flash
         out.append(f'<button class="hc" type="button" data-i="{i}" aria-label="Show {e(a["short"])}" tabindex="-1">'
-                   f'<img src="assets/screens/{a["key"]}-md.webp" alt="{e(a["name"])} app screen" {lazy}decoding="async"></button>')
+                   f'<img src="assets/screens/{a["key"]}-md.webp?v=2" srcset="assets/screens/{a["key"]}-sm.webp?v=2 480w, assets/screens/{a["key"]}-md.webp?v=2 780w" sizes="(max-width:960px) 45vw, 300px" alt="{e(a["name"])} app screen" {lazy}decoding="async"></button>')
     return "".join(out)
+
+
+import hashlib, subprocess
+VER = hashlib.md5(((ROOT / "styles.css").read_bytes() + (ROOT / "app.js").read_bytes())).hexdigest()[:8]
+SITE = "https://pixeltouch-redesign.vercel.app/"
+
+
+def jsonld():
+    data = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": SITE + "#org", "name": "Pixeltouch", "url": SITE,
+             "logo": SITE + "assets/brand/apple-touch-icon.png",
+             "sameAs": ["https://apps.apple.com/us/developer/sohel-ibna-saad/id1374788998"]},
+            {"@type": "WebSite", "@id": SITE + "#site", "url": SITE, "name": "Pixeltouch", "publisher": {"@id": SITE + "#org"}},
+            {"@type": "ItemList", "name": "Pixeltouch iOS apps", "itemListElement": [
+                {"@type": "ListItem", "position": i + 1, "item": {
+                    "@type": "MobileApplication", "name": a["name"], "operatingSystem": "iOS",
+                    "applicationCategory": "PhotographyApplication" if a["cat"].startswith("Photo") else "DesignApplication",
+                    "url": a["url"], "description": a["desc"],
+                    "image": SITE + "assets/icons/" + a["key"] + ".webp",
+                    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+                    "author": {"@id": SITE + "#org"}}}
+                for i, a in enumerate(APPS)]},
+        ]}
+    return json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
 
 
 def app_json():
@@ -57,7 +83,7 @@ def marquee():
     items = "".join(
         f'<a class="chip" href="{a["url"]}" target="_blank" rel="noopener"><img src="assets/icons/{a["key"]}.webp" alt="" width="30" height="30" loading="lazy"><span>{e(a["short"])}</span><em>{STAR}{a["rating"]}</em></a>'
         for a in APPS)
-    return f'<div class="marquee__track">{items}</div><div class="marquee__track" aria-hidden="true">{items}</div>'
+    return f'<div class="marquee__track">{items}</div><div class="marquee__track" aria-hidden="true" inert>{items}</div>'
 
 
 def lab_list():
@@ -127,7 +153,7 @@ def stack_cards():
           <div class="scard__media" aria-hidden="true">
             <span class="scard__ring"></span><span class="scard__ring scard__ring--2"></span>
             <div class="scard__phone">
-              <img class="scard__screen" src="assets/screens/{a["key"]}-md.webp" alt="" width="780" height="1690" loading="lazy" decoding="async">
+              <img class="scard__screen" src="assets/screens/{a["key"]}-md.webp?v=2" srcset="assets/screens/{a["key"]}-sm.webp?v=2 480w, assets/screens/{a["key"]}-md.webp?v=2 780w" sizes="(max-width:960px) 60vw, 340px" alt="{e(a["name"])} app screen" width="780" height="1690" loading="lazy" decoding="async">
               <img class="scard__device" src="assets/device.webp" alt="" width="760" height="1545" loading="lazy" decoding="async">
             </div>
           </div>
@@ -179,7 +205,7 @@ def mnav_apps():
 tpl = (ROOT / "src/index.src.html").read_text()
 blocks = {
     "LOGO": logo("logo", "h"), "LOGO_FOOT": logo("logo", "f"), "MARK": mark("mark", "s"),
-    "NAV_APPS": nav_apps(), "MNAV_APPS": mnav_apps(), "HERO_CARDS": hero_cards(), "APP_JSON": app_json(),
+    "VER": VER, "JSONLD": jsonld(), "NAV_APPS": nav_apps(), "MNAV_APPS": mnav_apps(), "HERO_CARDS": hero_cards(), "APP_JSON": app_json(),
     "MARQUEE": marquee(), "STACK_CARDS": stack_cards(), "STACK_DOCK": stack_dock(),
     "CTA_ICONS": cta_icons(), "FOOTER_APPS": footer_apps(),
     "WORDS": WORDS, "ARROW": ARROW, "CHEV": CHEV, "APPLE": APPLE, "STAR": STAR, "PREV": PREV, "NEXT": NEXT,
@@ -192,3 +218,11 @@ for key in re.findall(r"\{\{TECH:([a-z-]+)\}\}", tpl):
 assert "{{" not in tpl, tpl[tpl.index("{{"):tpl.index("{{") + 40]
 (ROOT / "index.html").write_text(tpl)
 print("built index.html", len(tpl))
+
+# minified production assets (esbuild); index.html references *.min.* with a content hash
+for src_, out_ in (("styles.css", "styles.min.css"), ("app.js", "app.min.js")):
+    r = subprocess.run(["npx", "-y", "esbuild@0.28.2", str(ROOT / src_), "--minify", "--log-level=warning",
+                        "--outfile=" + str(ROOT / out_)] + (["--target=es2020"] if src_.endswith(".js") else []),
+                       capture_output=True, text=True)
+    if r.returncode: raise SystemExit(r.stderr)
+    print("minified", out_, (ROOT / out_).stat().st_size)

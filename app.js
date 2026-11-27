@@ -38,7 +38,12 @@
     { src: 'assets/hero-4k.mp4?v=3', type: 'video/mp4; codecs="avc1.640033"', br: 10200000 },
   ];
   const HERO_SAFE = 'assets/hero-1080.mp4?v=3';
+  const HERO_720 = 'assets/hero-720.mp4?v=1';
   const pickHeroSrc = async () => {
+    // never decode more pixels than the screen can show: phones/tablets get 720p/1080p, 4K only for big, sharp screens
+    const px = Math.max(innerWidth, innerHeight * 16 / 9) * Math.min(devicePixelRatio || 1, 2);
+    if (px <= 1400 || (innerWidth < 768 && matchMedia('(pointer: coarse)').matches)) return HERO_720;
+    if (px <= 2300 || matchMedia('(pointer: coarse)').matches) return HERO_SAFE;
     const slow = navigator.connection && (navigator.connection.saveData || /(^|-)2g$/.test(navigator.connection.effectiveType || ''));
     if (slow) return HERO_SAFE;
     const can = HERO_SRC.filter(o => vid.canPlayType(o.type) !== '');
@@ -54,7 +59,8 @@
   };
   if (vid) {
     vid.muted = true; vid.defaultMuted = true; vid.volume = 0;
-    pickHeroSrc().then(src => { vid.src = src; vid.dataset.src = src; vid.load(); vid.play()?.catch(() => {}); watchHero(); });
+    // start the film once the loader is done so it never competes with first paint
+    (window.__loaderDone || Promise.resolve()).then(pickHeroSrc).then(src => { vid.src = src; vid.dataset.src = src; vid.load(); vid.play()?.catch(() => {}); watchHero(); });
     // safety net: if a device still can't keep up with 4K (dropping >20% of frames while visible),
     // swap to the 1080p master in place — same frame, no restart, no stutter.
     function watchHero() {
@@ -323,6 +329,8 @@
   window.__repaintFigs = paintFigs;
   // keep every figure moving on its own: run Liniqo's looping "tour" (an unseen pointer walking
   // the figure); a real pointer still takes over on hover and the loop resumes on leave.
+  const loadLiniqo = () => { if (loadLiniqo.done) return; loadLiniqo.done = 1; const sc = document.createElement('script'); sc.src = 'https://liniqo.com/live/embed.js'; sc.async = true; document.body.append(sc); };
+  new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { loadLiniqo(); o.disconnect(); } }, { rootMargin: '1200px 0px' }).observe(tech);
   const autoplayFigs = () => $$('.tfig').forEach(f => {
     if (f.__auto) return;
     const t = setInterval(() => { if (f.__liniqo && f.__liniqo.play) { clearInterval(t); f.__auto = 1; if (!reduce) f.__liniqo.play(true); } }, 250);
@@ -336,10 +344,10 @@
     if (!f.__bb) { try { const b = svg.getBBox(); if (b.width) f.__bb = b; } catch (_) {} }
     const b = f.__bb; if (!b) return;
     const u = f.offsetWidth / 400, aw = art.clientWidth, ah = art.clientHeight;
-    const sc = Math.max(1, Math.min(1.7, (aw * .84) / (b.width * u), (ah * .78) / (b.height * u)));
+    const sc = Math.max(.9, Math.min(1.6, (aw * .8) / (b.width * u), (ah * .64) / (b.height * u)));
     f.style.setProperty('--s', sc.toFixed(3));
     f.style.setProperty('--dx', ((200 - (b.x + b.width / 2)) * u).toFixed(1) + 'px');
-    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u).toFixed(1) + 'px');
+    f.style.setProperty('--dy', ((160 - (b.y + b.height / 2)) * u + ah * .05 / sc).toFixed(1) + 'px');
   };
   const centreAll = () => $$('.tfig').forEach(centreFig);
   let cTimer = 0;

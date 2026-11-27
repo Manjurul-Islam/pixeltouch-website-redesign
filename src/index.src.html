@@ -6,12 +6,33 @@
 <title>Pixeltouch — Creative iOS Apps for AI, Photo &amp; Video</title>
 <meta name="description" content="Pixeltouch is an independent iOS app studio. We build, own and grow AI, photo, video and design apps loved by 4.9M+ people on the App Store.">
 <meta name="theme-color" content="#f4f6f8">
+<link rel="canonical" href="https://pixeltouch-redesign.vercel.app/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="Pixeltouch">
+<meta name="keywords" content="Pixeltouch, iOS apps, iPhone apps, AI photo editor, blur photo, blur video, invitation maker, background eraser, Lightroom presets, AI art generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pixeltouch">
+<meta property="og:title" content="Pixeltouch — Creative iOS Apps for AI, Photo &amp; Video">
+<meta property="og:description" content="An independent iOS app studio. Nine AI, photo, video and design apps loved by 4.9M+ people on the App Store.">
+<meta property="og:url" content="https://pixeltouch-redesign.vercel.app/">
+<meta property="og:image" content="https://pixeltouch-redesign.vercel.app/assets/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pixeltouch — creative iOS apps">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pixeltouch — Creative iOS Apps for AI, Photo &amp; Video">
+<meta name="twitter:description" content="Nine AI, photo, video and design apps for iPhone, loved by 4.9M+ people.">
+<meta name="twitter:image" content="https://pixeltouch-redesign.vercel.app/assets/og.jpg">
 <link rel="icon" type="image/svg+xml" href="assets/brand/mark.svg">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="assets/hero-poster.webp?v=3" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=30">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="image" href="assets/hero-poster.webp?v=4" imagesrcset="assets/hero-poster-sm.webp?v=4 960w, assets/hero-poster.webp?v=4 1920w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="script" href="assets/vendor/lenis.min.js">
+<link rel="stylesheet" href="styles.min.css?v={{VER}}">
+<script type="application/ld+json">{{JSONLD}}</script>
 <script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('pt-theme');if(t==='dark'){document.documentElement.dataset.theme='dark';document.querySelector('meta[name=theme-color]').content='#0a0c0f'}}catch(e){}</script>
 </head>
 <body>
@@ -33,10 +54,10 @@
   var words = el.querySelectorAll('.loader__word'), i = 0, t0 = performance.now(), ready = false, done;
   window.__loaderDone = new Promise(function (r) { done = r; });
   words[0].classList.add('is-on');
-  var STEP = 360, MIN = 2400, MAX = 6000;
+  var STEP = 200, MIN = 1400, MAX = 4000;
   var tick = setInterval(function () {
     words[i].classList.remove('is-on'); words[i].classList.add('is-off');
-    var prev = words[i]; setTimeout(function () { prev.classList.remove('is-off'); }, 300);
+    var prev = words[i]; setTimeout(function () { prev.classList.remove('is-off'); }, 220);
     i = (i + 1) % words.length; words[i].classList.add('is-on');
     var el2 = performance.now() - t0;
     document.getElementById('loaderBar').style.transform = 'scaleX(' + Math.min(1, ready ? 1 : el2 / MIN * .85) + ')';
@@ -50,6 +71,9 @@
     setTimeout(done, 300);
     setTimeout(function () { el.remove(); root.classList.remove('is-loading'); }, 950);
   }
+  // ready = DOM parsed + web font in (no need to wait for every image/video byte)
+  var markReady = function () { (document.fonts && document.fonts.ready || Promise.resolve()).then(function () { ready = true; }); };
+  if (document.readyState !== 'loading') markReady(); else document.addEventListener('DOMContentLoaded', markReady);
   addEventListener('load', function () { ready = true; });
 })();
 </script>
@@ -98,7 +122,7 @@
 <section class="hero" id="top">
   <div class="hero__top">
     <div class="hero__media" aria-hidden="true">
-      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=3" disablepictureinpicture disableremoteplayback>
+      <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.webp?v=4" disablepictureinpicture disableremoteplayback>
 
       </video>
       <div class="hero__veil"></div>
@@ -253,7 +277,7 @@
   <div class="wrap">
     <div class="cta__card" id="ctaCard" data-reveal>
       <div class="cta__bg" aria-hidden="true">
-        <img src="assets/cta-daisies.webp?v=2" alt="" width="2800" height="2091" loading="lazy" decoding="async">
+        <img src="assets/cta-daisies.webp?v=3" srcset="assets/cta-daisies-sm.webp?v=3 1100w, assets/cta-daisies.webp?v=3 2000w" sizes="(max-width:960px) 100vw, 1260px" alt="" width="2000" height="1494" loading="lazy" decoding="async">
         <div class="pblur"><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="cta__copy">
@@ -338,14 +362,12 @@
         <g class="fw__base">{{WORDS}}</g><g class="fw__lit" fill="url(#fwg)">{{WORDS}}</g></svg>
     </div>
     <picture class="foot__meadow" aria-hidden="true">
-      <source media="(max-width:700px)" srcset="assets/meadow-sm.webp?v=8">
-      <img src="assets/meadow.webp?v=8" alt="" width="3840" height="1004" loading="lazy" decoding="async">
+      <img src="assets/meadow.webp?v=9" srcset="assets/meadow-sm.webp?v=9 900w, assets/meadow-md.webp?v=9 1600w, assets/meadow.webp?v=9 2560w" sizes="100vw" alt="" width="2560" height="669" loading="lazy" decoding="async">
     </picture>
   </div>
 </footer>
 
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
-<script src="app.js?v=27" defer></script>
-<script src="https://liniqo.com/live/embed.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script src="app.min.js?v={{VER}}" defer></script>
 </body>
 </html>
