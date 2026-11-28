@@ -1178,3 +1178,5 @@ html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(
 }
 /* ============ v46: hero (light) a little more white at the top ============ */
 html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(var(--glass-rgb) / .56) 0%,rgb(var(--glass-rgb) / .36) 13%,rgb(var(--glass-rgb) / .16) 28%,rgb(var(--glass-rgb) / .05) 40%,rgb(var(--glass-rgb) / 0) 50%),radial-gradient(85% 75% at 50% 34%,rgb(var(--glass-rgb) / .3),rgb(var(--glass-rgb) / .14) 45%,rgb(var(--glass-rgb) / .04) 75%,rgb(var(--glass-rgb) / 0) 100%)}
+/* ============ v46: hero (light) top white wash a little stronger ============ */
+html:not([data-theme="dark"]) .hero__veil{background:linear-gradient(180deg,rgb(var(--glass-rgb) / .56) 0%,rgb(var(--glass-rgb) / .34) 14%,rgb(var(--glass-rgb) / .13) 30%,rgb(var(--glass-rgb) / .03) 42%,rgb(var(--glass-rgb) / 0) 50%),radial-gradient(85% 75% at 50% 34%,rgb(var(--glass-rgb) / .3),rgb(var(--glass-rgb) / .14) 45%,rgb(var(--glass-rgb) / .04) 75%,rgb(var(--glass-rgb) / 0) 100%)}
